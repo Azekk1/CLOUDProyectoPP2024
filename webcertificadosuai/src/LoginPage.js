@@ -18,13 +18,18 @@ function LoginPage() {
       });
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
+        console.log('Inicio de sesion exitoso');
+
+        const token = data.token;
+        localStorage.setItem('token', token);
+
         // Si la autenticación fue exitosa, obtener los datos del usuario
         const userResponse = await fetch(`http://localhost:4000/api/users/${email}`, {
           method: 'GET',
         });
         const userData = await userResponse.json();
         setUserData(userData);
+
         console.log('Nombre usuario:', userData.user_name);
         console.log('ID carrera', userData.career_id);
         console.log('ID rol', userData.role_id);

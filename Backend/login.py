@@ -1,8 +1,20 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from datetime import datetime, timedelta, timezone
 import pymysql
+import jwt
+
+# Crear un objeto de zona horaria UTC
+utc_timezone = timezone.utc
+
+# Obtener la fecha y hora actual en UTC
+current_utc_time = datetime.now(utc_timezone)
+
+# Añadir 30 minutos a la fecha y hora actual
+expiration_time = current_utc_time + timedelta(minutes=30)
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'abcd1234'
 CORS(app)
 
 # Configuración de la conexión a la base de datos MySQL
@@ -27,7 +39,10 @@ def login():
     if user:
         # Si se encontró el usuario, verificar la contraseña
         if user[4] == password:  # Suponiendo que el hash de la contraseña se almacena en la columna 'password'
-            return jsonify({'message': 'Inicio de sesion exitoso'}), 200
+            payload = {'username': email, 'exp': expiration_time}
+            token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+            print(token)
+            return jsonify({'token': token})
         else:
             return jsonify({'message': 'Contraseña incorrecta'}), 401
     else:
