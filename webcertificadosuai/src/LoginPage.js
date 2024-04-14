@@ -31,8 +31,8 @@ function LoginPage() {
         setUserData(userData);
 
         console.log('Nombre usuario:', userData.user_name);
-        console.log('ID carrera', userData.career_id);
-        console.log('ID rol', userData.role_id);
+        console.log('Carrera:', userData.career);
+        console.log('Rol:', userData.role);
         console.log('Año de ingreso', userData.entry_year);
       } else {
         console.error('Error al iniciar sesión:', data.message);
