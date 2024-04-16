@@ -48,7 +48,10 @@ def login():
     else:
         return jsonify({'message': 'Usuario no encontrado'}), 404
 
-    cursor.close()
+@app.route('/logout', methods=['POST'])
+def logout():
+
+    return jsonify({'message': 'Sesión cerrada exitosamente'}), 200
 
 
 if __name__ == '__main__':
