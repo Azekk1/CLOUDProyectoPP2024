@@ -64,7 +64,10 @@ const Login = () => {
       // Añade el estilo para la imagen de fondo
     >
       <div className="w-full bg-cover bg-center relative">
-        <img src={campus} className="absolute" />
+        <img
+          src={campus}
+          className="absolute inset-0 w-full h-full object-cover opacity-80"
+        />
         <div className="container relative w-full h-screen">
           <div className="relative flex items-center justify-center text-center w-full z-1 mx-auto mb-[4rem] md:mb-20 lg:mb-[6rem]">
             <h1 className="h1 mb-4 mt-10 text-white relative z-10 text-center text-5xl">

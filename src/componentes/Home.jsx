@@ -38,24 +38,23 @@ const Hero = () => {
       customPaddings
       id="home"
     >
-      <div className="container relative w-full">
+      <div>
+        <div className="relative flex items-center justify-center text-center w-full h-64">
+          <img
+            src={fondo}
+            alt="Fondo"
+            className="absolute inset-0 w-screen h-full object-cover filter blur-sm"
+            style={{ zIndex: "-1" }}
+          />
+          <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
+          <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block">
+            Bienvenido a Certificados UAI
+          </h1>
+        </div>
+      </div>
+      <div className="container relative">
         {" "}
         <div className="relative z-1 w-full mx-auto text-center mb-[4rem] md:mb-20 lg:mb-[6rem]">
-          <div
-            className="relative flex items-center justify-center text-center w-full"
-            style={{ height: "250px", width: "100%" }}
-          >
-            <img
-              src={fondo}
-              alt="Fondo"
-              className="absolute inset-0 w-screen h-full object-cover filter blur-sm"
-              style={{ zIndex: "-1" }}
-            />
-            <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
-            <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block">
-              Bienvenido a Certificados UAI
-            </h1>
-          </div>
           <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8 font-bold text-2xl mt-10">
             En este sitio web podrás encontrar todo lo relacionado a
             certificaciones para tu carrera

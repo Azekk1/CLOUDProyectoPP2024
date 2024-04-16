@@ -1,5 +1,3 @@
-import SectionSvg from "../otros/svg/SectionSvg";
-
 const Section = ({
   className,
   id,
