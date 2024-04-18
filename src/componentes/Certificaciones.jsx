@@ -1,4 +1,5 @@
 import Section from "./Section";
+import LogoutButton from "./LogoutButton"
 
 const Certificaciones = () => {
   return (
@@ -13,9 +14,11 @@ const Certificaciones = () => {
         <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block text-5xl">
           Busca las certificaciones de tu interés
         </h1>
+        <LogoutButton/>
       </div>
     </Section>
   );
 };
 
 export default Certificaciones;
+

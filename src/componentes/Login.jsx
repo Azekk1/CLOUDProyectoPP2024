@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import Section from "./Section";
 import campus from "../otros/UAICAMPUS.jpg";
 
@@ -10,7 +11,8 @@ const LoginContainer = ({ children }) => {
   );
 };
 
-const Login = () => {
+const Login = ({setIsAuthenticated}) => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [userData, setUserData] = useState(null);
@@ -46,6 +48,9 @@ const Login = () => {
         console.log("Carrera:", userData.career);
         console.log("Rol:", userData.role);
         console.log("Año de ingreso", userData.entry_year);
+
+        setIsAuthenticated(true);
+        navigate('/redirect');
       } else {
         console.error("Error al iniciar sesión:", data.message);
       }
@@ -119,3 +124,4 @@ const Login = () => {
 };
 
 export default Login;
+
