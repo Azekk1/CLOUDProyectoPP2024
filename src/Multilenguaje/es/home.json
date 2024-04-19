@@ -1,0 +1,12 @@
+{
+    "welcome": "Bienvenido a Certificados UAI",
+    "description": "En este sitio web podrás encontrar todo lo relacionado a certificaciones para tu carrera",
+    "why1": "¿Por qué certificarse?",
+    "why2": "Las certificaciones te entregan herramientas útiles para desarrollarte profesionalmente, además fortalecen tu curriculum y te permiten especializarte adquiriendo conocimientos en áreas de tu gusto.",
+    "selection": "Selecciona tu área de interés",
+    "civil": "Ingeniería Civil",
+    "commercial": "Ingeniería Comercial",
+    "law": "Derecho",
+    "psychology": "Psicología",
+    "journalism": "Periodismo"
+}

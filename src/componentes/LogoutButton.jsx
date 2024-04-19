@@ -1,7 +1,11 @@
 import React from 'react';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+import '../Multilenguaje/i18n';
 
 const LogoutButton = () => {
+  const { t } = useTranslation('logout');
+
   const handleLogout = async () => {
     try {
       // Envía una solicitud al backend para cerrar sesión
@@ -20,7 +24,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <button onClick={handleLogout}>Cerrar sesión</button>
+    <button onClick={handleLogout}>{t('logout')}</button>
   );
 };
 

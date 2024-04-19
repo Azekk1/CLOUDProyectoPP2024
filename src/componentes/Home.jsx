@@ -6,6 +6,8 @@ import comercial from "../otros/ingcomercial.jpg";
 import derecho from "../otros/derecho.jpg";
 import periodismo from "../otros/periodismo.png";
 import psico from "../otros/psicologia.jpg";
+import { useTranslation } from 'react-i18next';
+import '../Multilenguaje/i18n';
 
 const Card = ({ imageSrc, text }) => {
   return (
@@ -30,6 +32,8 @@ const Card = ({ imageSrc, text }) => {
 };
 
 const Hero = () => {
+  const { t } = useTranslation('home');
+
   return (
     <Section
       className="pt-[12rem] -mt-[5.25] md:-mt-0" // Ajuste del margen superior en dispositivos medianos y grandes
@@ -48,7 +52,7 @@ const Hero = () => {
           />
           <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
           <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block">
-            Bienvenido a Certificados UAI
+            {t('welcome')}
           </h1>
         </div>
       </div>
@@ -56,26 +60,22 @@ const Hero = () => {
         {" "}
         <div className="relative z-1 w-full mx-auto text-center mb-[4rem] md:mb-20 lg:mb-[6rem]">
           <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8 font-bold text-2xl mt-10">
-            En este sitio web podrás encontrar todo lo relacionado a
-            certificaciones para tu carrera
+            {t('description')}
           </p>
-          <p>¿Por qué certificarse?</p>
+          <p>{t('why1')}</p>
           <p>
-            Las certificaciones te entregan herramientas útiles para
-            desarrollarte profesionalmente, además fortalecen tu curriculum y te
-            permiten especializarte adquiriendo conocimientos en áreas de tu
-            gusto.
+            {t('why2')}
           </p>
           <p className="body-1 max-w-xl mx-auto mb-6 text-n-2 lg:mb-8 font-bold text-4xl mt-6 text-center">
-            Selecciona tu área de interés
+            {t('selection')}
           </p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 -mt-10">
-          <Card imageSrc={ingenieriac} text="Ingeniería Civil" />
-          <Card imageSrc={comercial} text="Ingeniería Comercial" />
-          <Card imageSrc={derecho} text="Derecho" />
-          <Card imageSrc={psico} text="Psicología" />
-          <Card imageSrc={periodismo} text="Periodismo" />
+          <Card imageSrc={ingenieriac} text= {t('civil')} />
+          <Card imageSrc={comercial} text={t('commercial')} />
+          <Card imageSrc={derecho} text={t('law')} />
+          <Card imageSrc={psico} text={t('psychology')} />
+          <Card imageSrc={periodismo} text={t('journalism')} />
         </div>
       </div>
     </Section>

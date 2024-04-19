@@ -6,8 +6,10 @@ import Dashboard from "./componentes/Dashboard";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Certificaciones from "./componentes/Certificaciones";
 import Login from "./componentes/Login";
+import LanguageSwitcher from "./componentes/LanguageSwitcher";
 import campus from "./otros/UAICAMPUS.jpg";
 import React, { useState } from 'react';
+import LogoutButton from "./componentes/LogoutButton";
 
 const App = () => {
 
@@ -24,6 +26,7 @@ const App = () => {
           <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} /> 
           <Route path="/certificaciones" element={isAuthenticated ? <Certificaciones /> : <Navigate to="/login" />} />
           <Route path="/redirect" element={isAuthenticated ? <Navigate to="/" /> : null} />
+          <Route path="/language" element={<LanguageSwitcher />} />
         </Routes>
         <Footer />
       </div>
