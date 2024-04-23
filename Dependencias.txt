@@ -1,0 +1,5 @@
+pip install flask flask-restful
+
+pip install pymysql
+
+npm install react
