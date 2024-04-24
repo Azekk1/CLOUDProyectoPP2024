@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import "../Multilenguaje/i18n";
 
-//prueba con repo de github
+//prueba con repo de github 2
 
 const Dashboard = () => {
   const { t } = useTranslation("dashboard");
