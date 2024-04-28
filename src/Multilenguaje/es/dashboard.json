@@ -1,3 +1,8 @@
 {
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "submit": "Sube tu certificado",
+    "submit2": "Subir certificado",
+    "file": "Seleccionar archivo",
+    "submit3": "Subir",
+    "close": "Cerrar"
 }

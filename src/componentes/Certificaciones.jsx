@@ -2,20 +2,21 @@ import Section from "./Section";
 import LogoutButton from "./LogoutButton";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import React, { useState } from "react";
 import "../Multilenguaje/i18n";
 
 const Certificaciones = () => {
   const { t } = useTranslation("certifications");
 
   const certificaciones = [
-    { id: 1, nombre: "Certificación A", carrera: "Ingenieria Civil" },
-    { id: 2, nombre: "Certificación B", carrera: "Ingenieria Comercial" },
-    { id: 3, nombre: "Certificación C", carrera: "Carrera 3" },
-    { id: 4, nombre: "Certificación D", carrera: "Carrera 4" },
-    { id: 5, nombre: "Certificación E", carrera: "Carrera 5" },
-    { id: 6, nombre: "Certificación F", carrera: "Carrera 6" },
-    { id: 7, nombre: "Certificación G", carrera: "Carrera 7" },
-    { id: 8, nombre: "Certificación H", carrera: "Carrera 8" },
+    { id: 1, nombre: t('A'), carrera: t('A career') },
+    { id: 2, nombre: t('B'), carrera: t('B career') },
+    { id: 3, nombre: t('C'), carrera: t('C career') },
+    { id: 4, nombre: t('D'), carrera: t('D career') },
+    { id: 5, nombre: t('E'), carrera: t('E career') },
+    { id: 6, nombre: t('F'), carrera: t('F career') },
+    { id: 7, nombre: t('G'), carrera: t('G career') },
+    { id: 8, nombre: t('H'), carrera: t('H career') },
   ];
 
   const [filtroCarrera, setFiltroCarrera] = React.useState("Todas");
@@ -56,7 +57,7 @@ const Certificaciones = () => {
       >
         <div className="container relative w-full text-center mt-6">
           <h1 className="text-5xl h1 text-center mb-10">
-            Encuentra tu certificado
+            {t('find')}
           </h1>
         </div>
         {/* Contenedor principal */}
@@ -67,14 +68,14 @@ const Certificaciones = () => {
                 className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg
             -mt-4 mb-4"
               >
-                Sube tu certificado
+               {t('submit')}
               </button>
             </Link>
             <div className="bg-slate-800 text-center text-white p-4 rounded-lg">
-              <h2 className="text-xl font-bold mb-4">Filtrar por carrera:</h2>
+              <h2 className="text-xl font-bold mb-4">{t('filter')}:</h2>
               <input
                 type="text"
-                placeholder="Buscar por nombre"
+                placeholder= {t('search')}
                 value={busqueda}
                 onChange={handleBusquedaChange}
                 className="bg-white text-gray-800 rounded-md p-2 mb-4 w-full"
@@ -86,7 +87,7 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Todas")}
                 >
-                  Todas las carreras
+                  {t('every')}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
@@ -94,7 +95,7 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Ingenieria Civil")}
                 >
-                  Ingeniería Civil
+                  {t('civil')}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
@@ -104,7 +105,7 @@ const Certificaciones = () => {
                     handleFiltroCarreraChange("Ingenieria Comercial")
                   }
                 >
-                  Ingeniería Comercial
+                  {t('commercial')}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
@@ -112,7 +113,7 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Carrera 3")}
                 >
-                  Derecho
+                  {t('law')}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
@@ -120,7 +121,7 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Carrera 4")}
                 >
-                  Psicología
+                  {t('psychology')}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
@@ -128,7 +129,7 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Carrera 5")}
                 >
-                  Periodismo
+                  {t('journalism')}
                 </li>
               </ul>
             </div>

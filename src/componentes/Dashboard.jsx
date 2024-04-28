@@ -23,30 +23,31 @@ const Dashboard = () => {
     >
       <div className="container relative w-full">
         <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block">
-          Dashboard
+          {t('dashboard')}
         </h1>
         <button
           onClick={togglePopup}
           className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg mb-4"
         >
-          Sube tu certificado
+          {t('submit')}
         </button>
         {showPopup && (
           <div className="fixed top-0 left-0 w-full h-full bg-gray-500 bg-opacity-50 flex justify-center items-center">
             <div className="bg-white p-6 rounded-lg">
-              <h2 className="text-lg font-bold mb-4">Subir certificado</h2>
-              <input type="file" className="mb-4" />
+              <h2 className="text-lg font-bold mb-4">{t('submit2')}</h2>
+              <label htmlFor="fileInput" className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg mr-4">{t('file')}</label>
+              <input type="file" id="fileInput" className="mb-4"  style={{ visibility: 'hidden' }}/>
               <button
                 onClick={togglePopup}
                 className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg mr-4"
               >
-                Subir
+                {t('submit3')}
               </button>
               <button
                 onClick={togglePopup}
                 className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg"
               >
-                Cerrar
+                {t('close')}
               </button>
             </div>
           </div>
