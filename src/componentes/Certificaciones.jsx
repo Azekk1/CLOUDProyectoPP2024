@@ -93,7 +93,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange("Ingenieria Civil")}
+                  onClick={() => handleFiltroCarreraChange(t('A career'))}
                 >
                   {t('civil')}
                 </li>
@@ -102,7 +102,7 @@ const Certificaciones = () => {
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
                   onClick={() =>
-                    handleFiltroCarreraChange("Ingenieria Comercial")
+                    handleFiltroCarreraChange(t('B career'))
                   }
                 >
                   {t('commercial')}
@@ -111,7 +111,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 3" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange("Carrera 3")}
+                  onClick={() => handleFiltroCarreraChange(t('C career'))}
                 >
                   {t('law')}
                 </li>
@@ -119,7 +119,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 4" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange("Carrera 4")}
+                  onClick={() => handleFiltroCarreraChange(t('D career'))}
                 >
                   {t('psychology')}
                 </li>
@@ -127,7 +127,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 5" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange("Carrera 5")}
+                  onClick={() => handleFiltroCarreraChange(t('E career'))}
                 >
                   {t('journalism')}
                 </li>
