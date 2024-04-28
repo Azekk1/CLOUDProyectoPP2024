@@ -7,12 +7,13 @@ import uuid
 app = Flask(__name__)
 CORS(app)
 
-# Conectar a la base de datos MySQL
+# Configuración de la conexión a la base de datos MySQL
 db_connection = pymysql.connect(
-    host=os.environ['DB_HOST'],
-    user=os.environ['DB_USER'],
-    password=os.environ['DB_PASSWORD'],
-    db=os.environ['DB_NAME']
+    host='localhost',
+    port=3306,
+    user='root',
+    password='login',
+    database='login'
 )
 
 @app.route('/api/certificates', methods=['POST'])
