@@ -13,7 +13,6 @@ const LanguageSwitcher = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    navigate("/");
   };
 
   return (

@@ -9,14 +9,14 @@ const Certificaciones = () => {
   const { t } = useTranslation("certifications");
 
   const certificaciones = [
-    { id: 1, nombre: t('A'), carrera: t('A career') },
-    { id: 2, nombre: t('B'), carrera: t('B career') },
-    { id: 3, nombre: t('C'), carrera: t('C career') },
-    { id: 4, nombre: t('D'), carrera: t('D career') },
-    { id: 5, nombre: t('E'), carrera: t('E career') },
-    { id: 6, nombre: t('F'), carrera: t('F career') },
-    { id: 7, nombre: t('G'), carrera: t('G career') },
-    { id: 8, nombre: t('H'), carrera: t('H career') },
+    { id: 1, nombre: t("A"), carrera: t("A career") },
+    { id: 2, nombre: t("B"), carrera: t("B career") },
+    { id: 3, nombre: t("C"), carrera: t("C career") },
+    { id: 4, nombre: t("D"), carrera: t("D career") },
+    { id: 5, nombre: t("E"), carrera: t("E career") },
+    { id: 6, nombre: t("F"), carrera: t("F career") },
+    { id: 7, nombre: t("G"), carrera: t("G career") },
+    { id: 8, nombre: t("H"), carrera: t("H career") },
   ];
 
   const [filtroCarrera, setFiltroCarrera] = React.useState("Todas");
@@ -56,9 +56,7 @@ const Certificaciones = () => {
         id="certificaciones"
       >
         <div className="container relative w-full text-center mt-6">
-          <h1 className="text-5xl h1 text-center mb-10">
-            {t('find')}
-          </h1>
+          <h1 className="text-5xl h1 text-center mb-10">{t("find")}</h1>
         </div>
         {/* Contenedor principal */}
         <div className="mx-auto container relative w-full h-full flex flex-col md:flex-row items-center justify-center">
@@ -68,14 +66,14 @@ const Certificaciones = () => {
                 className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg
             -mt-4 mb-4"
               >
-               {t('submit')}
+                {t("submit")}
               </button>
             </Link>
             <div className="bg-slate-800 text-center text-white p-4 rounded-lg">
-              <h2 className="text-xl font-bold mb-4">{t('filter')}:</h2>
+              <h2 className="text-xl font-bold mb-4">{t("filter")}:</h2>
               <input
                 type="text"
-                placeholder= {t('search')}
+                placeholder={t("search")}
                 value={busqueda}
                 onChange={handleBusquedaChange}
                 className="bg-white text-gray-800 rounded-md p-2 mb-4 w-full"
@@ -87,49 +85,47 @@ const Certificaciones = () => {
                   }`}
                   onClick={() => handleFiltroCarreraChange("Todas")}
                 >
-                  {t('every')}
+                  {t("every")}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t('A career'))}
+                  onClick={() => handleFiltroCarreraChange(t("A career"))}
                 >
-                  {t('civil')}
+                  {t("civil")}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
-                  onClick={() =>
-                    handleFiltroCarreraChange(t('B career'))
-                  }
+                  onClick={() => handleFiltroCarreraChange(t("B career"))}
                 >
-                  {t('commercial')}
+                  {t("commercial")}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 3" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t('C career'))}
+                  onClick={() => handleFiltroCarreraChange(t("C career"))}
                 >
-                  {t('law')}
+                  {t("law")}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 4" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t('D career'))}
+                  onClick={() => handleFiltroCarreraChange(t("D career"))}
                 >
-                  {t('psychology')}
+                  {t("psychology")}
                 </li>
                 <li
                   className={`cursor-pointer mb-2 ${
                     filtroCarrera === "Carrera 5" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t('E career'))}
+                  onClick={() => handleFiltroCarreraChange(t("E career"))}
                 >
-                  {t('journalism')}
+                  {t("journalism")}
                 </li>
               </ul>
             </div>

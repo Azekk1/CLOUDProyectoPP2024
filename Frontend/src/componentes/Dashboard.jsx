@@ -58,19 +58,19 @@ const Dashboard = () => {
           </span>
           <ul className="mt-6 space-y-4 border-2 p-2 text-center bg-slate-50 text-white w-64 rounded-lg">
             <li
-              className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
+              className="cursor-pointer border bg-slate-700 p-2 rounded-lg hover:opacity-80"
               onClick={() => togglePopup("Certificación 1")}
             >
               Certificación 1
             </li>
             <li
-              className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
+              className="cursor-pointer border bg-slate-700 p-2 rounded-lg hover:opacity-80"
               onClick={() => togglePopup("Certificación 2")}
             >
               Certificación 2
             </li>
             <li
-              className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
+              className="cursor-pointer border bg-slate-700 p-2 rounded-lg hover:opacity-80"
               onClick={() => togglePopup("Certificación 3")}
             >
               Certificación 3
