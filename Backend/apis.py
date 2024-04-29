@@ -8,9 +8,9 @@ CORS(app)
 # Configuración de la conexión a la base de datos MySQL
 db_connection = pymysql.connect(
     host='localhost',
-    port=3306,
-    user='root',
-    password='login',
+    port=3307,
+    user='myuser',
+    password='mypassword',
     database='login'
 )
 

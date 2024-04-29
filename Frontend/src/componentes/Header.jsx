@@ -6,12 +6,14 @@ import { useState } from "react";
 import Button from "./Button";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { Link } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
-import '../Multilenguaje/i18n';
+import { useTranslation } from "react-i18next";
+import "../Multilenguaje/i18n";
 import LogoutButton from "./LogoutButton";
+import LanguageSwitcher from "./LanguageSwitcher";
+import Logout from "./LogoutButton";
 
 const Header = () => {
-  const { t } = useTranslation('header');
+  const { t } = useTranslation("header");
 
   const pathname = useLocation();
   const [openNavigation, setopenNavigation] = useState(false);
@@ -32,19 +34,28 @@ const Header = () => {
     setopenNavigation(false);
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("token")
+  );
+  console.log(localStorage.getItem("token"));
 
   // pestañas de navegación
   const navigationItems = [
-    { id: 0, title: t('dashboard'), href: "/dashboard", onlyMobile: false },
+    { id: 0, title: t("dashboard"), href: "/dashboard", onlyMobile: false },
     {
       id: 1,
-      title: t('certificates'),
+      title: t("certificates"),
       href: "/certificaciones",
       onlyMobile: false,
     },
-    { id: 2, title: t('login'), href: "/login", onlyMobile: false },
-    {id: 3, title: t('language'), href: "/language", onlyMobile: false},
-  ];
+    // Incluye el enlace al inicio de sesión solo si el usuario no está autenticado
+    !isAuthenticated && {
+      id: 2,
+      title: t("login"),
+      href: "/login",
+      onlyMobile: false,
+    },
+  ].filter(Boolean);
 
   return (
     <div
@@ -85,6 +96,8 @@ const Header = () => {
         >
           <MenuSvg openNavigation={openNavigation} />
         </Button>
+        <LanguageSwitcher />
+        {isAuthenticated && <Logout />}
       </div>
     </div>
   );

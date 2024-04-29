@@ -6,15 +6,14 @@ import Dashboard from "./componentes/Dashboard";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Certificaciones from "./componentes/Certificaciones";
 import Login from "./componentes/Login";
-import LanguageSwitcher from "./componentes/LanguageSwitcher";
-import campus from "./otros/UAICAMPUS.jpg";
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import LogoutButton from "./componentes/LogoutButton";
 
 const App = () => {
-
-  const [isAuthenticated, setIsAuthenticated] = useState(localStorage.getItem('token'));
-  console.log(localStorage.getItem('token'));
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    localStorage.getItem("token")
+  );
+  console.log(localStorage.getItem("token"));
 
   return (
     <>
@@ -22,11 +21,24 @@ const App = () => {
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login setIsAuthenticated={setIsAuthenticated} />} />
-          <Route path="/dashboard" element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} /> 
-          <Route path="/certificaciones" element={isAuthenticated ? <Certificaciones /> : <Navigate to="/login" />} />
-          <Route path="/redirect" element={isAuthenticated ? <Navigate to="/" /> : null} />
-          <Route path="/language" element={<LanguageSwitcher />} />
+          <Route
+            path="/login"
+            element={<Login setIsAuthenticated={setIsAuthenticated} />}
+          />
+          <Route
+            path="/dashboard"
+            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/certificaciones"
+            element={
+              isAuthenticated ? <Certificaciones /> : <Navigate to="/login" />
+            }
+          />
+          <Route
+            path="/redirect"
+            element={isAuthenticated ? <Navigate to="/" /> : null}
+          />
         </Routes>
         <Footer />
       </div>
