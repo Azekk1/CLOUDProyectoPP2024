@@ -17,54 +17,65 @@ db_connection = pymysql.connect(
 )
 
 
-def obtener_id_certificado(data):
-    certificado = data.get('nombre_certificado')
+# Función para obtener el ID del certificado desde la base de datos
+def obtener_id_certificado(nombre_certificado):
     cursor = db_connection.cursor()
-    cursor.execute('SELECT * FROM certificate WHERE name= %s', (certificado,))
+    cursor.execute('SELECT certificate_id FROM certificate WHERE name = %s', (nombre_certificado,))
     certificate_id = cursor.fetchone()
-    return(certificate_id)
+    return certificate_id[0] if certificate_id else None
 
-# Function to upload a certificate and store it in the database
-@app.route('/subircertificado', methods=['POST'])
-def upload_certificate(userData):
-    data = request.json
-    user_id = userData.user_id
+# Ruta al directorio donde se guardarán los certificados
+CERTIFICATES_DIR = 'certificates'
+
+# Verificar si el directorio "certificates" existe, si no, crearlo
+if not os.path.exists(CERTIFICATES_DIR):
+    os.makedirs(CERTIFICATES_DIR)
+
+
+# Función para subir un certificado y almacenar información en la base de datos
+@app.route('/dashboard', methods=['POST'])
+def upload_certificate():
+    # Obtener los datos del cuerpo de la solicitud
+    user_id = request.form.get('user_id')
+    certificate_name = request.form.get('certificate_name')
+    certificate_file = request.files['file']
     
-    # Check if a file was uploaded
-    if 'file' not in request.files:
+    # Verificar si se subió un archivo
+    if not certificate_file:
         return jsonify({'error': 'No file uploaded'}), 400
 
-    # Get the uploaded file
-    file = request.files['file']
-
-    # Check if a file was actually uploaded
-    if file.filename == '':
+    # Verificar si se seleccionó un archivo
+    if certificate_file.filename == '':
         return jsonify({'error': 'No file selected'}), 400
 
-    # Generate a unique file name
+    # Generar un nombre único para el archivo
     file_name = f"{str(uuid.uuid4())}.pdf"
 
-    # Save the file to the server
-    file_path = os.path.join('certificates', file_name)
-    file.save(file_path)
+    # Guardar el archivo en el servidor
+    file_path = os.path.join(CERTIFICATES_DIR, file_name)
+    certificate_file.save(file_path)
 
-    # Create a URL for the file
-    file_url = f"http://your-server.com/certificates/{file_name}"
+    # Crear una URL para el archivo
+    file_path = f"http://your-server.com/{CERTIFICATES_DIR}/{file_name}"
 
-    # Store the file path and URL in the database
+    # Insertar los datos en la base de datos
     with db_connection.cursor() as cursor:
-        # Insert the file path, URL, user ID and certificate ID into the user_certificate table
-        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_url) VALUES (%s, %s, %s)"
-        cursor.execute(sql, ( user_id, certificate_id, file_url))
+        # Obtener el ID del certificado basado en el nombre
+        certificate_id = obtener_id_certificado(certificate_name)
+        
+        # Insertar el usuario, el certificado y la URL del archivo en la tabla user_certificate
+        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path) VALUES (%s, %s, %s)"
+        cursor.execute(sql, (user_id, certificate_id, file_path))
 
-        # Get the ID of the newly inserted certificate
+        # Obtener el ID del certificado recién insertado
         certificate_id = cursor.lastrowid
 
-        # Commit the changes
+        # Confirmar los cambios en la base de datos
         db_connection.commit()
 
-    # Return the certificate ID
-    return jsonify({'certificate_id': certificate_id}), 201
+    # Retornar el ID del certificado
+    return jsonify({'message': 'Archivo guardado con exito'}), 201
 
 
-
+if __name__ == "__main__":
+    app.run(port=3000)  # Cambia el puerto a 5001
