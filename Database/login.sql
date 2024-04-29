@@ -122,6 +122,7 @@ DROP TABLE IF EXISTS `user_certificate`;
 CREATE TABLE `user_certificate` (
   `user_id` int NOT NULL,
   `certificate_id` int NOT NULL,
+  `file_path` varchar(255) DEFAULT NULL,
   `approved` char(1) DEFAULT NULL,
   KEY `user_id_idx` (`user_id`),
   KEY `certificate_id_idx` (`certificate_id`),
