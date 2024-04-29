@@ -108,37 +108,6 @@ const Dashboard = () => {
   };
 
   return (
-<<<<<<< HEAD
-    <div>
-      <h1 className="h1 mb-6 mt-6 items-center text-white relative text-center z-10 text-5xl">
-        {t("dashboard")}
-      </h1>
-      <div>
-        <span className="text-xl font-bold">
-          {" "}
-          Sube una certificación de la lista:
-        </span>
-        <ul className="mt-6 space-y-4 border-2 p-2 text-center bg-slate-50 text-white w-64 rounded-lg">
-          <li
-            className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
-            onClick={() => togglePopup("Certificación 1")}
-          >
-            Certificación 1
-          </li>
-          <li
-            className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
-            onClick={() => togglePopup("Certificación 2")}
-          >
-            Certificación 2
-          </li>
-          <li
-            className="cursor-pointer border bg-slate-700 p-2 rounded-lg"
-            onClick={() => togglePopup("Certificación 3")}
-          >
-            Certificación 3
-          </li>
-        </ul>
-=======
     <Section
       className="pt-[12rem] -mt-[5.25] md:-mt-0 bg-slate-100"
       crosses
@@ -181,7 +150,6 @@ const Dashboard = () => {
           onClose={togglePopup}
           certificateName={selectedCertificate}
         />
->>>>>>> abf25f7274598e25e73249baf8c0ea373a456863
       </div>
       <Popup
         show={showPopup}
