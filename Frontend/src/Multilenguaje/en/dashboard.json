@@ -1,8 +1,11 @@
 {
     "dashboard": "Dashboard",
     "submit": "Submit your certificate",
-    "submit2": "Submit certificate",
-    "file": "Select file",
-    "submit3": "Submit",
-    "close": "Close"
+    "close": "Close",
+    "submit2": "Submit",
+    "list": "Submit a certificate from the list:",
+    "1": "Certificate 1",
+    "2": "Certificate 2",
+    "3": "Certificate 3",
+    "file": "Select file"
 }
