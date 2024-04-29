@@ -13,11 +13,10 @@ const LanguageSwitcher = () => {
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    navigate("/");
   };
 
   return (
-    <div className="flex flex-row ml-64 space-x-4">
+    <div className="overflow-x-auto flex flex-row space-x-4">
       <button onClick={() => changeLanguage("en")}>
         <img src={en} style={{ width: "20px", height: "20px" }} />
       </button>
