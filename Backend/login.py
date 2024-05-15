@@ -7,11 +7,6 @@ import jwt
 # Crear un objeto de zona horaria UTC
 utc_timezone = timezone.utc
 
-# Obtener la fecha y hora actual en UTC
-current_utc_time = datetime.now(utc_timezone)
-
-# Añadir 30 minutos a la fecha y hora actual
-expiration_time = current_utc_time + timedelta(minutes=30)
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd1234'
@@ -39,10 +34,15 @@ def login():
     if user:
         # Si se encontró el usuario, verificar la contraseña
         if user[4] == password:  # Suponiendo que el hash de la contraseña se almacena en la columna 'password'
-            payload = {'username': email, 'exp': expiration_time}
-            token = jwt.encode(payload, app.config['SECRET_KEY'], algorithm='HS256')
+             # Obtener la fecha y hora actual en UTC
+            current_utc_time = datetime.now(utc_timezone)
+
+            # Añadir 30 minutos a la fecha y hora actual
+            expiration_time = current_utc_time + timedelta(minutes=1)
+
+            token = jwt.encode({'sub': email, 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
             print(token)
-            return jsonify({'token': token})
+            return jsonify({'token': token, 'expirationTime': expiration_time})
         else:
             return jsonify({'message': 'Contraseña incorrecta'}), 401
     else:
