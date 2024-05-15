@@ -13,6 +13,7 @@ const LogoutButton = () => {
 
       // Eliminar el token de acceso del localStorage
       localStorage.removeItem("token");
+      localStorage.removeItem("expiration_time");
       console.log("Token: ", localStorage.getItem("token"));
 
       // Redirigir a la página de inicio de sesión o a otra página
