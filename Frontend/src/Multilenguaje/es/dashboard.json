@@ -1,11 +1,13 @@
 {
-    "dashboard": "Dashboard",
-    "submit": "Sube tu certificado",
-    "close": "Cerrar",
-    "submit2": "Subir",
-    "list": "Sube una certificación de la lista:",
-    "1": "Certificación 1",
-    "2": "Certificación 2",
-    "3": "Certificación 3",
-    "file": "Seleccionar archivo"
+  "dashboard": "Dashboard",
+  "submit": "Sube tu certificado",
+  "close": "Cerrar",
+  "submit2": "Subir",
+  "list": "Sube una certificación de la lista",
+  "1": "Certificación 1",
+  "2": "Certificación 2",
+  "3": "Certificación 3",
+  "file": "Seleccionar archivo",
+  "stats": "Estadísticas Generales",
+  "upload_cert": "Subir una certificación de la lista"
 }

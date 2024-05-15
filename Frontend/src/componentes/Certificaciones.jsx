@@ -59,7 +59,7 @@ const Certificaciones = () => {
           <h1 className="text-5xl h1 text-center mb-10">{t("find")}</h1>
         </div>
         {/* Contenedor principal */}
-        <div className="mx-auto container relative w-full h-full flex flex-col md:flex-row items-center justify-center">
+        <div className="mx-0 container relative w-full h-full flex flex-col md:flex-row items-center justify-center">
           <div className="w-full md:w-auto h-auto relative md:mr-12 md:mt-12">
             <Link to="/dashboard">
               <button
