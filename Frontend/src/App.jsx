@@ -6,13 +6,32 @@ import Dashboard from "./componentes/Dashboard";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Certificaciones from "./componentes/Certificaciones";
 import Login from "./componentes/Login";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import LogoutButton from "./componentes/LogoutButton";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("token")
   );
+
+   // Función para verificar si el token ha expirado
+   const isTokenExpired = () => {
+    const expirationTime = localStorage.getItem('expirationTime');
+    if (!expirationTime) {
+        return true; // Si no hay una fecha de expiración, consideramos que el token ha expirado
+    }
+    return new Date() > new Date(expirationTime); // Comparamos la fecha actual con la fecha de expiración
+  }
+
+  useEffect(() => {
+    if (isAuthenticated && isTokenExpired()) {
+      // Si el usuario está autenticado pero el token ha expirado, eliminamos el token y actualizamos el estado de autenticación
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationTime");
+      setIsAuthenticated(false);
+    }
+  }, [isAuthenticated]);
+
   console.log(localStorage.getItem("token"));
 
   return (

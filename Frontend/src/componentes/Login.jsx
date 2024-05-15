@@ -35,7 +35,9 @@ const Login = ({setIsAuthenticated}) => {
         console.log("Inicio de sesión exitoso");
 
         const token = data.token;
+        const expirationTime = data.expirationTime;
         localStorage.setItem("token", token);
+        localStorage.setItem("expirationTime", expirationTime);
 
         // Si la autenticación fue exitosa, obtener los datos del usuario
         const userResponse = await fetch(
@@ -127,4 +129,3 @@ const Login = ({setIsAuthenticated}) => {
 };
 
 export default Login;
-

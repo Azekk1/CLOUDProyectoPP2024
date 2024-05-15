@@ -2,7 +2,7 @@ import logouai from "../otros/logouai.svg";
 import { useLocation } from "react-router-dom";
 import MenuSvg from "../otros/svg/MenuSvg";
 import { HamburgerMenu } from "../design/Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Button from "./Button";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import { Link } from "react-router-dom";
@@ -37,6 +37,24 @@ const Header = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("token")
   );
+
+  const isTokenExpired = () => {
+    const expirationTime = localStorage.getItem('expirationTime');
+    if (!expirationTime) {
+        return true; // Si no hay una fecha de expiración, consideramos que el token ha expirado
+    }
+    return new Date() > new Date(expirationTime); // Comparamos la fecha actual con la fecha de expiración
+  }
+
+  useEffect(() => {
+    if (isAuthenticated && isTokenExpired()) {
+      // Si el usuario está autenticado pero el token ha expirado, eliminamos el token y actualizamos el estado de autenticación
+      localStorage.removeItem("token");
+      localStorage.removeItem("expirationTime");
+      setIsAuthenticated(false);
+    }
+  }, [isAuthenticated]);
+
   console.log(localStorage.getItem("token"));
 
   // pestañas de navegación
@@ -104,3 +122,4 @@ const Header = () => {
 };
 
 export default Header;
+
