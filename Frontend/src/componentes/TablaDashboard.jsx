@@ -70,15 +70,15 @@ const TablaDashboard = () => {
   });
 
   return (
-    <div>
+    <div className="bg-secondary p-2 rounded-lg">
       <input
         type="text"
         value={filtering}
         onChange={(e) => setFiltering(e.target.value)}
-        className="border w-64 border-slate-500 mt-6 -mb-1 rounded-sm"
+        className="border w-64 border-secondary mt-6 -mb-1 rounded-md"
         placeholder="Filtra por lo que necesites"
       />
-      <table className="w-full bg-slate-700 rounded-lg ">
+      <table className="w-full bg-primary rounded-lg ">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
@@ -101,7 +101,7 @@ const TablaDashboard = () => {
         <tbody>
           {table.getRowModel().rows.map((row) => (
             <tr
-              className="border-t border-slate-400  bg-slate-600 text-center transition hover:bg-slate-700"
+              className="border-t border-secondary  bg-background text-center transition hover:bg-background/80 text-text"
               key={row.id}
             >
               {row.getVisibleCells().map((cell) => (
@@ -114,25 +114,25 @@ const TablaDashboard = () => {
         </tbody>
       </table>
       <button
-        className="p-1 bg-slate-500 mt-2 rounded-xl mx-1"
+        className="p-1 bg-accent mt-2 rounded-xl mx-1 text-text2"
         onClick={() => table.setPageIndex(0)}
       >
-        Primer página
+        Primera página
       </button>
       <button
-        className="p-1 bg-slate-500 mt-2 rounded-xl mx-1"
+        className="p-1 bg-accent mt-2 rounded-xl mx-1 text-text2"
         onClick={() => table.previousPage()}
       >
         Página Anterior
       </button>
       <button
-        className="p-1 bg-slate-500 mt-2 rounded-xl mx-1"
+        className="p-1 bg-accent mt-2 rounded-xl mx-1 text-text2"
         onClick={() => table.nextPage()}
       >
         Página Siguiente
       </button>
       <button
-        className="p-1 bg-slate-500 mt-2 rounded-xl mx-1"
+        className="p-1 bg-accent mt-2 rounded-xl mx-1 text-text2"
         onClick={() => table.setPageIndex(table.getPageCount() - 1)}
       >
         Última página

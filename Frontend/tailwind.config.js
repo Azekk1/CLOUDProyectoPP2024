@@ -11,14 +11,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        color: {
-          1: "#AC6AFF",
-          2: "#FFC876",
-          3: "#FF776F",
-          4: "#7ADB78",
-          5: "#858DFF",
-          6: "#FF98E2",
-        },
+        primary: "#0A0A0A",
+        secondary: "#E0E0E0",
+        accent: "#38bef8",
+        background: "#FFFFFF",
+        text: "#343434",
+        text2: "#F0F0F0",
         stroke: {
           1: "#26242C",
         },

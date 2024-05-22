@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 const Card = ({ imageSrc, text }) => {
   return (
     <div
-      className="relative z-1 p-0.5 rounded-2xl bg-gray-200 border-4 border-sky-300 hover:filter hover:brightness-75 transition duration-300 w-700 h-700"
+      className="relative z-1 p-0.5 rounded-2xl bg-secondary border-4 border-accent hover:filter hover:brightness-75 transition duration-300 w-700 h-700"
       style={{ width: "250px", height: "250px" }}
     >
       <img
@@ -22,7 +22,6 @@ const Card = ({ imageSrc, text }) => {
         className="absolute inset-0 w-full h-full object-cover object-center filter blur-sm"
         style={{ zIndex: "-1" }}
       />
-
       <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center text-white z-10">
         <div className="bg-black bg-opacity-50 p-4 rounded-md">
           <p className="text-white">{text}</p>
@@ -37,7 +36,7 @@ const Hero = () => {
 
   return (
     <Section
-      className="pt-[12rem] -mt-[5.25] md:-mt-0" // Ajuste del margen superior en dispositivos medianos y grandes
+      className="pt-[12rem] -mt-[5.25] md:-mt-0"
       crosses
       crossesOffset="lg:translate-y-[5.25rem]"
       customPaddings
@@ -45,27 +44,29 @@ const Hero = () => {
     >
       <div>
         <div className="relative flex items-center justify-center text-center w-full h-64">
-          <img
-            src={fondo}
-            alt="Fondo"
-            className="absolute inset-0 w-screen h-full object-cover filter blur-sm"
-            style={{ zIndex: "-1" }}
-          />
-          <div className="absolute inset-0 bg-black opacity-50 z-0"></div>
-          <h1 className="h1 mb-6 mt-6 text-white relative z-10 inline-block">
+          <div className="object-fill absolute inset-0 opacity-80 z-0">
+            <img
+              src={fondo}
+              alt="Fondo"
+              className="absolute inset-0 w-screen h-full object-fill filter blur-sm"
+              style={{ zIndex: "-1" }}
+            />
+          </div>
+          <h1 className="h1 mb-6 text-text/90 mt-6 text-s relative z-10 inline-block">
             {t("welcome")}
           </h1>
         </div>
       </div>
-      <div className="container relative">
-        {" "}
+      <div className="container relative mb-16">
         <div className="relative z-1 w-full mx-auto text-center mb-[4rem] md:mb-20 lg:mb-[6rem]">
-          <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8 font-bold text-2xl mt-10">
+          <p className="body-1 max-w-3xl mx-auto mb-6 text-text lg:mb-8 font-bold text-2xl mt-10">
             {t("description")}
           </p>
-          <p>{t("why1")}</p>
-          <p>{t("why2")}</p>
-          <p className="body-1 max-w-xl mx-auto mb-6 text-n-2 lg:mb-8 font-bold text-4xl mt-6 text-center">
+          <div className="bg-primary/20 p-2 rounded-xl">
+            <p className="text-text">{t("why1")}</p>
+            <p className="text-text">{t("why2")}</p>
+          </div>
+          <p className="body-1 max-w-xl mx-auto mb-6 text-text lg:mb-8 font-bold text-4xl mt-6 text-center">
             {t("selection")}
           </p>
         </div>

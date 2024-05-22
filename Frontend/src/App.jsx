@@ -2,26 +2,30 @@ import Button from "./componentes/Button";
 import Header from "./componentes/Header";
 import Home from "./componentes/Home";
 import Footer from "./componentes/Footer";
-import Dashboard from "./componentes/Dashboard";
+import DashboardFull from "./componentes/DashboardFull";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Certificaciones from "./componentes/Certificaciones";
 import Login from "./componentes/Login";
 import React, { useState, useEffect } from "react";
 import LogoutButton from "./componentes/LogoutButton";
+import Perfil from "./componentes/Perfil";
+import Estadisticas from "./componentes/Estadisticas";
+import TablaDashboard from "./componentes/TablaDashboard";
+import Subircerts from "./componentes/Subircerts";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("token")
   );
 
-   // Función para verificar si el token ha expirado
-   const isTokenExpired = () => {
-    const expirationTime = localStorage.getItem('expirationTime');
+  // Función para verificar si el token ha expirado
+  const isTokenExpired = () => {
+    const expirationTime = localStorage.getItem("expirationTime");
     if (!expirationTime) {
-        return true; // Si no hay una fecha de expiración, consideramos que el token ha expirado
+      return true; // Si no hay una fecha de expiración, consideramos que el token ha expirado
     }
     return new Date() > new Date(expirationTime); // Comparamos la fecha actual con la fecha de expiración
-  }
+  };
 
   useEffect(() => {
     if (isAuthenticated && isTokenExpired()) {
@@ -36,7 +40,7 @@ const App = () => {
 
   return (
     <>
-      <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden w-screen">
+      <div className="pt-[2.75rem] lg:pt-[4.25rem] overflow-hidden w-screen bg-background">
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -46,8 +50,33 @@ const App = () => {
           />
           <Route
             path="/dashboard"
-            element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />}
-          />
+            element={
+              isAuthenticated ? <DashboardFull /> : <Navigate to="/login" />
+            }
+          >
+            <Route
+              index
+              element={isAuthenticated ? <Perfil /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="estadisticas"
+              element={
+                isAuthenticated ? <Estadisticas /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="subir-certificaciones"
+              element={
+                isAuthenticated ? <Subircerts /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="tabla-alumnos"
+              element={
+                isAuthenticated ? <TablaDashboard /> : <Navigate to="/login" />
+              }
+            />
+          </Route>
           <Route
             path="/certificaciones"
             element={

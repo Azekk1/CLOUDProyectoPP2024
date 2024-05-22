@@ -1,20 +1,12 @@
-import Section from "./Section";
 import React from "react";
-import { useTranslation } from 'react-i18next';
-import '../Multilenguaje/i18n';
 
-const Footer = () => {
-  const { t } = useTranslation('footer');
-
+export default function Footer() {
   return (
-    <Section crosses className="!px-0 !py-10">
-      <div className=" container bottom-0 flex sm:justify-between justify-center items-center gap-10 max-sm:flex-col w-full">
-        <p className="caption text-n-4 lg:block">
-          © {new Date().getFullYear()}. {t('rights')}
-        </p>
+    <footer className=" bg-primary/70 w-full text-center dark:bg-primary/70 lg:text-left">
+      {/* <!--Copyright section--> */}
+      <div className="bg-primary/70 p-4 text-center text-text2 dark:bg-primary/70 dark:text-text2">
+        © 2024 Copyright: Grupo RAS UAI
       </div>
-    </Section>
+    </footer>
   );
-};
-
-export default Footer;
+}

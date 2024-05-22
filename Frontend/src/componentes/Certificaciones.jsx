@@ -47,7 +47,7 @@ const Certificaciones = () => {
   });
 
   return (
-    <div className="p-2 2 xl:shrink-0">
+    <div className="p-2 2 xl:shrink-0 mb-12">
       <Section
         className="pt-[12rem] -mt-[5.25] md:-mt-0"
         crosses
@@ -56,31 +56,35 @@ const Certificaciones = () => {
         id="certificaciones"
       >
         <div className="container relative w-full text-center mt-6">
-          <h1 className="text-5xl h1 text-center mb-10">{t("find")}</h1>
+          <h1 className="text-text text-5xl h1 text-center mb-10">
+            {t("find")}
+          </h1>
         </div>
         {/* Contenedor principal */}
         <div className="mx-0 container relative w-full h-full flex flex-col md:flex-row items-center justify-center">
           <div className="w-full md:w-auto h-auto relative md:mr-12 md:mt-12">
             <Link to="/dashboard">
               <button
-                className="bg-sky-500 hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg
+                className="transition-colors bg-accent hover:bg-sky-700 text-white font-bold py-2 px-4 rounded-lg
             -mt-4 mb-4"
               >
                 {t("submit")}
               </button>
             </Link>
-            <div className="bg-slate-800 text-center text-white p-4 rounded-lg">
-              <h2 className="text-xl font-bold mb-4">{t("filter")}:</h2>
+            <div className="shadow-xl border-secondary border-4 text-center text-text p-4 rounded-xl">
+              <h2 className="text-xl font-bold mb-4 bg-secondary p-1 rounded-lg">
+                {t("filter")}
+              </h2>
               <input
                 type="text"
                 placeholder={t("search")}
                 value={busqueda}
                 onChange={handleBusquedaChange}
-                className="bg-white text-gray-800 rounded-md p-2 mb-4 w-full"
+                className="bg-background text-text rounded-md p-2 mb-4 w-full border-secondary border-2"
               />
-              <ul>
+              <ul className="bg-secondary rounded-lg p-1">
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer border-b-2 border-primary/20 mb-2 ${
                     filtroCarrera === "Todas" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange("Todas")}
@@ -88,7 +92,7 @@ const Certificaciones = () => {
                   {t("every")}
                 </li>
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange(t("A career"))}
@@ -96,7 +100,7 @@ const Certificaciones = () => {
                   {t("civil")}
                 </li>
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange(t("B career"))}
@@ -104,7 +108,7 @@ const Certificaciones = () => {
                   {t("commercial")}
                 </li>
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Carrera 3" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange(t("C career"))}
@@ -112,7 +116,7 @@ const Certificaciones = () => {
                   {t("law")}
                 </li>
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Carrera 4" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange(t("D career"))}
@@ -120,7 +124,7 @@ const Certificaciones = () => {
                   {t("psychology")}
                 </li>
                 <li
-                  className={`cursor-pointer mb-2 ${
+                  className={`cursor-pointer mb-1 ${
                     filtroCarrera === "Carrera 5" && "font-bold"
                   }`}
                   onClick={() => handleFiltroCarreraChange(t("E career"))}
@@ -131,13 +135,13 @@ const Certificaciones = () => {
             </div>
           </div>
           {/* Contenido de certificaciones */}
-          <div className="border-solid border-4 border-sky-500 bg-white shadow-xl p-4 rounded-lg w-full md:w-3/4 mt-12 md:mt-0">
+          <div className="border-solid border-2 border-accent bg-background shadow-xl p-4 rounded-xl w-full md:w-3/4 mt-12 md:mt-0">
             {/* Lista de certificaciones filtradas */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:grid-cols-4">
               {certificacionesFiltradas.map((certificacion) => (
                 <div
                   key={certificacion.id}
-                  className="hover:bg-gradient-to-r hover:from-cyan-500/50 hover:to-blue-500/50 bg-slate-300 text-gray-800 rounded-lg p-4"
+                  className="hover:transition-all duration-500 hover:bg-accent bg-secondary text-text rounded-lg p-4"
                 >
                   <h3 className="font-bold">{certificacion.nombre}</h3>
                   <p>{certificacion.carrera}</p>

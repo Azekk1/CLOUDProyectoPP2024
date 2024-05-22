@@ -1,20 +1,20 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import Section from "./Section";
 import campus from "../otros/UAICAMPUS.jpg";
-import { useTranslation } from 'react-i18next';
-import '../Multilenguaje/i18n';
+import { useTranslation } from "react-i18next";
+import "../Multilenguaje/i18n";
 
 const LoginContainer = ({ children }) => {
   return (
-    <div className="bg-slate-600 rounded-lg p-8 max-w-md mx-auto flex relative justify-center shadow-xl ring ring-slate-700 opacity-95">
+    <div className="bg-primary rounded-xl p-8 max-w-md mx-auto flex relative justify-center shadow-xl">
       {children}
     </div>
   );
 };
 
-const Login = ({setIsAuthenticated}) => {
-  const { t } = useTranslation('login');
+const Login = ({ setIsAuthenticated }) => {
+  const { t } = useTranslation("login");
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -55,7 +55,7 @@ const Login = ({setIsAuthenticated}) => {
         console.log("Año de ingreso", userData.entry_year);
 
         setIsAuthenticated(true);
-        navigate('/redirect');
+        navigate("/redirect");
       } else {
         console.error("Error al iniciar sesión:", data.message);
       }
@@ -80,8 +80,8 @@ const Login = ({setIsAuthenticated}) => {
         />
         <div className="container relative w-full h-screen">
           <div className="relative flex items-center justify-center text-center w-full z-1 mx-auto mb-[4rem] md:mb-20 lg:mb-[6rem]">
-            <h1 className="h1 mb-4 mt-10 text-white relative z-10 text-center text-5xl">
-              {t('message')}
+            <h1 className="h1 mb-4 mt-10 text-text relative z-10 text-center text-5xl">
+              {t("message")}
             </h1>
           </div>
           <LoginContainer>
@@ -90,11 +90,11 @@ const Login = ({setIsAuthenticated}) => {
                 <input
                   type="email"
                   name="email"
-                  placeholder={t('mail')}
+                  placeholder={t("mail")}
                   id="email"
                   value={email}
                   required
-                  className="border-solid border rounded text-white w-64"
+                  className="border-solid border rounded text-text2 w-64"
                   onChange={(e) => setEmail(e.target.value)}
                 />
               </div>
@@ -104,10 +104,10 @@ const Login = ({setIsAuthenticated}) => {
                   type="password"
                   name="password"
                   id="password"
-                  placeholder={t('password')}
+                  placeholder={t("password")}
                   value={password}
                   required
-                  className=" border-solid border rounded text-white w-64"
+                  className=" border-solid border rounded text-text2 w-64"
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
@@ -115,9 +115,9 @@ const Login = ({setIsAuthenticated}) => {
               <div className=" items-center text-center relative">
                 <button
                   type="submit"
-                  className="mt-2 bg-slate-300 rounded text-black px-2 "
+                  className="mt-2 bg-secondary rounded text-text px-2 "
                 >
-                  {t('login')}
+                  {t("login")}
                 </button>
               </div>
             </form>
