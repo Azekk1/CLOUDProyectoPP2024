@@ -1,3 +1,4 @@
+// Login.jsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Section from "./Section";
@@ -54,7 +55,7 @@ const Login = ({ setIsAuthenticated }) => {
         console.log("Rol:", userData.role);
         console.log("Año de ingreso", userData.entry_year);
 
-        setIsAuthenticated(true);
+        setIsAuthenticated(true); // Aquí se actualiza el estado de autenticación
         navigate("/redirect");
       } else {
         console.error("Error al iniciar sesión:", data.message);

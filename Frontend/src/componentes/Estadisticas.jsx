@@ -86,7 +86,7 @@ const Estadisticas = () => {
     },
   };
   return (
-    <div className="grid grid-cols-2 gap-2 bg-secondary rounded-lg p-1 w-full h-11/12">
+    <div className="ml-12 grid grid-cols-2 gap-2 bg-secondary rounded-lg p-1 w-11/12 h-11/12">
       <div className="items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 col-span-2 h-16">
         Info
       </div>

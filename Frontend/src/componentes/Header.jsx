@@ -1,29 +1,25 @@
-import logouai from "../otros/logouai.svg";
-import { useLocation } from "react-router-dom";
-import MenuSvg from "../otros/svg/MenuSvg";
-import { HamburgerMenu } from "../design/Header";
-import { useState, useEffect } from "react";
-import Button from "./Button";
+import React, { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
-import { Link } from "react-router-dom";
+import logouai from "../otros/logouai.svg";
+import MenuSvg from "../otros/svg/MenuSvg";
+import Button from "./Button";
+import LanguageSwitcher from "./LanguageSwitcher";
+import LogoutButton from "./LogoutButton";
 import { useTranslation } from "react-i18next";
 import "../Multilenguaje/i18n";
-import LogoutButton from "./LogoutButton";
-import LanguageSwitcher from "./LanguageSwitcher";
-import Logout from "./LogoutButton";
 
-const Header = () => {
+const Header = ({ isAuthenticated }) => {
   const { t } = useTranslation("header");
-
   const pathname = useLocation();
-  const [openNavigation, setopenNavigation] = useState(false);
+  const [openNavigation, setOpenNavigation] = useState(false);
 
   const toggleNavigation = () => {
     if (openNavigation) {
-      setopenNavigation(false);
+      setOpenNavigation(false);
       enablePageScroll();
     } else {
-      setopenNavigation(true);
+      setOpenNavigation(true);
       disablePageScroll();
     }
   };
@@ -31,33 +27,10 @@ const Header = () => {
   const handleClick = () => {
     if (!openNavigation) return;
     enablePageScroll();
-    setopenNavigation(false);
+    setOpenNavigation(false);
   };
 
-  const [isAuthenticated, setIsAuthenticated] = useState(
-    localStorage.getItem("token")
-  );
-
-  const isTokenExpired = () => {
-    const expirationTime = localStorage.getItem("expirationTime");
-    if (!expirationTime) {
-      return true; // Si no hay una fecha de expiración, consideramos que el token ha expirado
-    }
-    return new Date() > new Date(expirationTime); // Comparamos la fecha actual con la fecha de expiración
-  };
-
-  useEffect(() => {
-    if (isAuthenticated && isTokenExpired()) {
-      // Si el usuario está autenticado pero el token ha expirado, eliminamos el token y actualizamos el estado de autenticación
-      localStorage.removeItem("token");
-      localStorage.removeItem("expirationTime");
-      setIsAuthenticated(false);
-    }
-  }, [isAuthenticated]);
-
-  console.log(localStorage.getItem("token"));
-
-  // pestañas de navegación
+  // Pestañas de navegación
   const navigationItems = [
     { id: 0, title: t("dashboard"), href: "/dashboard", onlyMobile: false },
     {
@@ -81,42 +54,52 @@ const Header = () => {
         openNavigation ? "bg-primary" : "bg-primary backdrop-blur-sm"
       }`}
     >
-      <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-4">
-        <a className="block w-[12rem] xl:mr-8" href="/">
-          <img src={logouai} width={190} height={40} alt="UAI" />
-        </a>
-        <nav
-          className={`flex flex-col items-center justify-center ${
-            openNavigation
-              ? "fixed top-0 left-0 right-0 bottom-0 bg-primary"
-              : "hidden lg:flex lg:static lg:bg-transparent"
-          }`}
-        >
-          <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
+      <div className="flex items-center justify-between px-5 lg:px-7.5 xl:px-10 ">
+        <div className="flex items-center">
+          <Link className="block w-[12rem] xl:mr-8" to="/">
+            <img src={logouai} width={190} height={40} alt="UAI" />
+          </Link>
+          <nav className="hidden lg:flex items-center">
             {navigationItems.map((item) => (
               <Link
                 key={item.id}
                 to={item.href}
                 onClick={handleClick}
-                className={`px-12 block relative font-prueba2 text-xl uppercase text-text2 transition-colors hover:text-sky-400 lg:text-base lg:font-semibold ${
-                  item.url === pathname.pathname ? "z-2" : ""
-                } ${openNavigation ? "py-20 text-3xl" : ""}`}
+                className={`px-4 font-prueba2 text-xl uppercase text-text2 transition-colors hover:text-sky-400 lg:text-base lg:font-semibold ${
+                  item.url === pathname.pathname ? "text-accent" : ""
+                }`}
+              >
+                {item.title}
+              </Link>
+            ))}
+          </nav>
+        </div>
+        <div className="flex items-center">
+          <LanguageSwitcher />
+          {isAuthenticated && <LogoutButton />}
+          <div className="lg:hidden ml-3">
+            <Button className="px-3" onClick={toggleNavigation}>
+              <MenuSvg openNavigation={openNavigation} />
+            </Button>
+          </div>
+        </div>
+      </div>
+      {openNavigation && (
+        <nav className="fixed top-0 left-0 right-0 bottom-0 bg-primary lg:hidden">
+          <div className="flex flex-col items-center justify-center h-full">
+            {navigationItems.map((item) => (
+              <Link
+                key={item.id}
+                to={item.href}
+                onClick={handleClick}
+                className={`py-4 font-prueba2 text-3xl uppercase text-text2 transition-colors hover:text-accent`}
               >
                 {item.title}
               </Link>
             ))}
           </div>
-          <HamburgerMenu />
-        </nav>{" "}
-        <Button
-          className="ml-auto lg:hidden px='px-3"
-          onClick={toggleNavigation}
-        >
-          <MenuSvg openNavigation={openNavigation} />
-        </Button>
-        <LanguageSwitcher />
-        {isAuthenticated && <Logout />}
-      </div>
+        </nav>
+      )}
     </div>
   );
 };

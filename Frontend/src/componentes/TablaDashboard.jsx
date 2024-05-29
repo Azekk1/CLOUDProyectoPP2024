@@ -70,7 +70,7 @@ const TablaDashboard = () => {
   });
 
   return (
-    <div className="bg-secondary p-2 rounded-lg">
+    <div className="bg-secondary p-2 rounded-lg w-[97%]">
       <input
         type="text"
         value={filtering}

@@ -1,12 +1,12 @@
-import Button from "./componentes/Button";
+// App.js
+import React, { useState, useEffect } from "react";
+import { Route, Routes, Navigate } from "react-router-dom";
 import Header from "./componentes/Header";
 import Home from "./componentes/Home";
 import Footer from "./componentes/Footer";
 import DashboardFull from "./componentes/DashboardFull";
-import { Route, Routes, Navigate } from "react-router-dom";
 import Certificaciones from "./componentes/Certificaciones";
 import Login from "./componentes/Login";
-import React, { useState, useEffect } from "react";
 import LogoutButton from "./componentes/LogoutButton";
 import Perfil from "./componentes/Perfil";
 import Estadisticas from "./componentes/Estadisticas";
@@ -41,7 +41,7 @@ const App = () => {
   return (
     <>
       <div className="pt-[2.75rem] lg:pt-[4.25rem] overflow-hidden w-screen bg-background">
-        <Header />
+        <Header isAuthenticated={isAuthenticated} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
