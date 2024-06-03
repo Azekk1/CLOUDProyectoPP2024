@@ -1,9 +1,14 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pymysql
+import logging
 
 app = Flask(__name__)
 CORS(app)
+
+# Configurar el logger
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger(__name__)
 
 # Configuración de la conexión a la base de datos MySQL
 db_connection = pymysql.connect(
@@ -13,6 +18,23 @@ db_connection = pymysql.connect(
     password='mypassword',
     database='login'
 )
+
+# Loggings
+
+@app.route('/debug')
+def debug_route():
+    logger.debug("La tabla no tiene datos")
+    return "La tabla no tiene datos"
+
+@app.route('/info')
+def info_route():
+    logger.info("Mostrando tabla de:")
+    return "Mostrando tabla de:"
+
+@app.route('/error')
+def error_route():
+    logger.error("Error al obtener datos")
+    return "Error al obtener datos"
 
 # Ruta para obtener un usuario por su nombre
 @app.route('/api/users/<user_name>', methods=['GET'])

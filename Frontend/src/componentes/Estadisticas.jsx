@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from 'axios';
 
 const formatNumber = (num) => {
   const parsedNum = parseFloat(num);
@@ -16,10 +17,38 @@ const Estadisticas = () => {
   const [avgCareer, setAvgCareer] = useState([]);
   const [careers, setCareers] = useState([]);
 
+  const callDebugLog = (json) => {
+    if (json.length == 0) {
+      axios.get('http://localhost:4000/debug')
+        .then(response => {
+          console.log(response.data);
+        })
+        .catch(error => {
+          callErrorLog();
+        });
+    }
+  };
+
+  const callErrorLog = () => {
+    axios.get('http://localhost:4000/error')
+      .then(response => {
+        console.log(response.data);
+      })
+  };
+
+  const callInfoLog = (tabla) => {
+    axios.get('http://localhost:4000/info')
+    .then(response => {
+      console.log(response.data, tabla);
+    })
+  }
+
+
   const fetchData = async (endpoint, setter) => {
     const response = await fetch(`http://localhost:4000/api/${endpoint}`);
     const data = await response.json();
     setter(data);
+    callDebugLog(data);
   };
 
   const handleToggleTable = async (table) => {
@@ -50,6 +79,7 @@ const Estadisticas = () => {
           break;
       }
       await fetchData(endpoint, setter);
+      callInfoLog(endpoint);
     }
   };
 
