@@ -6,11 +6,16 @@ pip install pymysql
 
 npm install react
 
+npm install
+
+npm install @tanstack/react-table
 
 
-
+Ejecutar frontend
+1. Entrar en carpeta
+2. Ejecutar npm run dev
 
 
 Como usar base de datos:
 1. Construir imagen comando: docker build -t base-de-datos .
-2. Ejecutar imagen comando: docker run -d -p 3307:3306 --name nombre_contenedor -e MYSQL_PORT=3306 base-de-datos
+2. Ejecutar imagen comando: docker run -d -p 3307:3306 --name base_de_datos -e MYSQL_PORT=3306 base-de-datos
