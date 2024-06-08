@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 const Popup = ({ show, onClose, onAddCert }) => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -124,29 +125,39 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 };
 
 const Perfil = () => {
-  const usuarioInicial = {
-    nombre: "Juan Pérez",
-    correo: "ejemplo@alumnos.uai.cl",
-    rol: "Estudiante",
-    carrera: "Ingeniería en Ingeniería",
-    generacion: "2022",
-    foto: "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
-    descripcion: "Estudiante de Ingeniería en Ingeniería en su último año.",
-    certificaciones: [
-      { id: 1, titulo: "Certificación en Data Science", fecha: "Mayo 2023" },
-      {
-        id: 2,
-        titulo: "Certificación en Machine Learning",
-        fecha: "Junio 2023",
-      },
-      { id: 3, titulo: "Certificación en Desarrollo Web", fecha: "Julio 2023" },
-    ],
-  };
-
-  const [usuario, setUsuario] = useState(usuarioInicial);
+  const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
-  const [nuevaDescripcion, setNuevaDescripcion] = useState(usuario.descripcion);
+  const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      const user_name = decodedToken.sub;
+
+      fetch(`http://localhost:4000/api/users/${user_name}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setUsuario({
+            nombre: `${data.first_name} ${data.last_name}`,
+            correo: data.user_name,
+            rol: data.role_name,
+            carrera: data.career_name,
+            generacion: data.entry_year,
+            foto: "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
+            descripcion: data.descripcion || "Descripción no disponible",
+            certificaciones: [], // Asume que debes llenar esto con datos reales
+          });
+          setNuevaDescripcion(data.descripcion || "Descripción no disponible");
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+    }
+  }, []);
+
+  if (!usuario) {
+    return <div>Loading...</div>;
+  }
 
   const manejarCambioDescripcion = (e) => {
     setNuevaDescripcion(e.target.value);
@@ -178,7 +189,11 @@ const Perfil = () => {
           </h2>
           <p className="text-text">{usuario.correo}</p>
           <p className="text-text">{usuario.carrera}</p>
-          <p className="text-text">Generación {usuario.generacion}</p>
+          {usuario.rol === "profesor" ? (
+            <p className="text-text">Profesor desde {usuario.generacion}</p>
+          ) : (
+            <p className="text-text">Generación {usuario.generacion}</p>
+          )}
           <p className="text-text font-semibold">{usuario.rol}</p>
         </div>
       </div>

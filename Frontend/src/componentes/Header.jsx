@@ -50,7 +50,7 @@ const Header = ({ isAuthenticated }) => {
 
   return (
     <div
-      className={`fixed top-0 w-full z-50 border-b border-white lg:bg-primary lg:backdrop-blur-sm ${
+      className={`fixed top-0 w-full z-1 border-b border-white lg:bg-primary lg:backdrop-blur-sm ${
         openNavigation ? "bg-primary" : "bg-primary backdrop-blur-sm"
       }`}
     >

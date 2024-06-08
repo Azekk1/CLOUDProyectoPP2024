@@ -53,10 +53,13 @@ const Login = ({ setIsAuthenticated }) => {
         console.log("Nombre usuario:", userData.user_name);
         console.log("Carrera:", userData.career);
         console.log("Rol:", userData.role);
+        localStorage.setItem("userRole", userData.role_data);
         console.log("Año de ingreso", userData.entry_year);
+        console.log("Nombre", userData.first_name);
 
         setIsAuthenticated(true); // Aquí se actualiza el estado de autenticación
         navigate("/redirect");
+        navigate("/dashboard", { state: { username: userData.user_name } });
       } else {
         console.error("Error al iniciar sesión:", data.message);
       }

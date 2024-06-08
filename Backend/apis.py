@@ -23,6 +23,10 @@ def get_user_by_username(user_name):
     # Ejecutar una consulta para obtener el usuario por su nombre
     cursor.execute('SELECT * FROM users WHERE user_name = %s', (user_name,))
     user = cursor.fetchone()  # Obtener el primer resultado (si hay alguno)
+    cursor.execute('SELECT * FROM career WHERE career_id = %s', (user[1],))
+    career_data = cursor.fetchone()
+    cursor.execute('SELECT * FROM role WHERE role_id = %s', (user[2],))
+    role_data = cursor.fetchone()
 
     cursor.close()  # Cerrar el cursor
 
@@ -31,11 +35,15 @@ def get_user_by_username(user_name):
         # Si se encontró el usuario, devolver los datos como respuesta JSON
         user_data = {
             'user_id': user[0],
-            'career_id': user[1],
-            'role_id': user[2],
+            'career_id': career_data[0],  # Se envía el ID de la carrera
+            'career_name': career_data[1],  # Se envía el nombre de la carrera
+            'role_id': role_data[0],  # Se envía el ID del rol
+            'role_name': role_data[1],  # Se envía el nombre del rol
             'user_name': user[3],
             'password': user[4],
-            'entry_year': user[5]
+            'entry_year': user[5],
+            'first_name': user[6],
+            'last_name': user[7]
         }
         return jsonify(user_data), 200
     else:

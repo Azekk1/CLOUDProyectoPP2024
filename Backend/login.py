@@ -7,7 +7,6 @@ import jwt
 # Crear un objeto de zona horaria UTC
 utc_timezone = timezone.utc
 
-
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd1234'
 CORS(app)
@@ -33,16 +32,27 @@ def login():
 
     if user:
         # Si se encontró el usuario, verificar la contraseña
-        if user[4] == password:  # Suponiendo que el hash de la contraseña se almacena en la columna 'password'
-             # Obtener la fecha y hora actual en UTC
+        if user[4] == password:  # Suponiendo que la contraseña se almacena en la columna 'password'
+
+            cursor.execute('SELECT * FROM career WHERE career_id = %s', (user[1],))
+            career_data = cursor.fetchone()
+            cursor.execute('SELECT * FROM role WHERE role_id = %s', (user[2],))
+            role_data = cursor.fetchone()    
+
+            # Obtener la fecha y hora actual en UTC
             current_utc_time = datetime.now(utc_timezone)
 
             # Añadir 30 minutos a la fecha y hora actual
-            expiration_time = current_utc_time + timedelta(minutes=1)
+            expiration_time = current_utc_time + timedelta(minutes=30)
 
-            token = jwt.encode({'sub': email, 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
-            print(token)
-            return jsonify({'token': token, 'expirationTime': expiration_time})
+            # Crear el token JWT
+            token = jwt.encode(
+                {'sub': email, 'iat': current_utc_time, 'exp': expiration_time},
+                app.config['SECRET_KEY'],
+                algorithm='HS256'
+            )
+
+            return jsonify({'role': role_data, 'token': token, 'expirationTime': expiration_time.isoformat()}), 200, 
         else:
             return jsonify({'message': 'Contraseña incorrecta'}), 401
     else:
@@ -50,9 +60,7 @@ def login():
 
 @app.route('/logout', methods=['POST'])
 def logout():
-
     return jsonify({'message': 'Sesión cerrada exitosamente'}), 200
-
 
 if __name__ == '__main__':
     app.run(debug=True)

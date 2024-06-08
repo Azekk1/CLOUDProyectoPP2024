@@ -12,6 +12,7 @@ import Perfil from "./componentes/Perfil";
 import Estadisticas from "./componentes/Estadisticas";
 import TablaDashboard from "./componentes/TablaDashboard";
 import Subircerts from "./componentes/Subircerts";
+import PanelAdmin from "./componentes/PanelAdmin";
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(
@@ -74,6 +75,12 @@ const App = () => {
               path="tabla-alumnos"
               element={
                 isAuthenticated ? <TablaDashboard /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="panel-admin"
+              element={
+                isAuthenticated ? <PanelAdmin /> : <Navigate to="/login" />
               }
             />
           </Route>
