@@ -4,6 +4,7 @@ from datetime import datetime, timedelta, timezone
 import pymysql
 import jwt
 
+
 # Crear un objeto de zona horaria UTC
 utc_timezone = timezone.utc
 
@@ -40,7 +41,7 @@ def login():
             # Añadir 30 minutos a la fecha y hora actual
             expiration_time = current_utc_time + timedelta(minutes=1)
 
-            token = jwt.encode({'sub': email, 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
+            token = jwt.encode({'sub': email, 'user_id': user[1], 'user_role': user[2], 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
             print(token)
             return jsonify({'token': token, 'expirationTime': expiration_time})
         else:

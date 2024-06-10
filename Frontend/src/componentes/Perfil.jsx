@@ -1,40 +1,121 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
+import { useTranslation } from 'react-i18next';
 
-const Popup = ({ show, onClose, onAddCert }) => {
+
+const decodeJWT = (token) => {
+  try {
+    const base64Url = token.split('.')[1]; // Obtiene la parte del payload del token
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Reemplaza caracteres URL-safe
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    console.error('Error decodificando el JWT:', e);
+    return null;
+  }
+};
+
+const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => { // Cambiado certificateName a certificateId
+  if (!show) {
+    return null;
+  }
+
   const [selectedFile, setSelectedFile] = useState(null);
-  const [certName, setCertName] = useState("");
+  const [certificates, setCertificates] = useState([]);
+  const [certificate_id, setCertificateid] = useState(''); // Esto podría necesitar ser cambiado o eliminado dependiendo de su uso
 
-  if (!show) return null;
+  useEffect(() => {
+    const fetchCertificates = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:4000/api/certificates');
+        if (!response.ok) {
+          throw new Error('Error al cargar los certificados');
+        }
+        const data = await response.json();
+        setCertificates(data);
+      } catch (error) {
+        console.error('Error al cargar los certificados:', error);
+      }
+    };
+
+    fetchCertificates();
+  }, []);
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
+    setSelectedFile(event.target.files[0]);
   };
 
-  const handleSubmit = () => {
-    if (certName && selectedFile) {
-      onAddCert({
-        id: Date.now(),
-        titulo: certName,
-        fecha: new Date().toLocaleDateString(),
+  const handleSubmit = async () => {
+    if (!selectedFile) {
+      alert('Por favor, selecciona un archivo primero.');
+      return;
+    };
+    console.log('al comienzo',certificate_id)
+    if (!certificate_id) {
+      alert('Por favor, selecciona un certificado.');
+      return;
+    }
+
+    const token = localStorage.getItem('token');
+      if (!token) {
+        alert('No se encontró el token de autenticación.');
+        return;
+      };
+
+    alert('antes de decodificar');
+    console.log(token);
+
+    const decoded = decodeJWT(token);
+    const userId = decoded.user_id;
+    alert('se descifro el token');
+
+    console.log('segundo',certificate_id) // Cambiado de certificateName a certificateId
+    const formData = new FormData();
+    formData.append('user_id', userId);
+    formData.append('certificate_name', certificate_id); // Cambiado de certificateName a certificateId
+    formData.append('file', selectedFile);
+
+    try {
+      const response = await fetch('http://127.0.0.1:3000/dashboard', {
+        method: 'POST',
+        body: formData,
       });
-      onClose();
+      alert('se hizo la solicitud')
+
+      if (!response.ok) {
+        throw new Error('Error al subir el archivo');
+      }
+
+      const result = await response.json();
+      console.log(result);
+      onClose(); // Considera llamar a onAddCert si necesitas actualizar algún estado externo
+    } catch (error) {
+      console.error('Error al subir el archivo:', error);
+      alert('Error al subir el archivo. Por favor, intenta de nuevo.');
     }
   };
 
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50 z-50">
-      <div className="bg-background p-8 rounded-lg">
+      <div className="bg-background p-8 rounded-lg" style={{ zIndex: 51 }}>
         <h2 className="text-2xl font-bold mb-4 text-text">
           Subir Certificación
         </h2>
-        <input
-          type="text"
-          placeholder="Nombre de la certificación"
-          value={certName}
-          onChange={(e) => setCertName(e.target.value)}
+        <select
+          value={certificate_id}
+          onChange={(e) => setCertificateid(e.target.value)}
           className="mb-4 p-2 w-full border rounded-md"
-        />
+        >
+          <option value="">Selecciona una certificación</option>
+          {certificates.map((cert) => (
+            <option key={cert.certificate_id} value={cert.certificateId}>
+              {cert.certificate_name}
+            </option>
+          ))}
+        </select>
         <label
           htmlFor="fileInput"
           className="transition-all bg-gray-500 cursor-pointer hover:bg-secondary text-white font-bold py-2 px-4 rounded-xl mr-4"

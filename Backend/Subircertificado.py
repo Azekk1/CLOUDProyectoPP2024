@@ -3,6 +3,7 @@ from flask_cors import CORS
 import pymysql
 import os
 import uuid
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -57,6 +58,9 @@ def upload_certificate():
 
     # Crear una URL para el archivo
     file_path = f"http://your-server.com/{CERTIFICATES_DIR}/{file_name}"
+    
+    # Obtener la fecha y hora actual
+    current_time = datetime.now()
 
     # Insertar los datos en la base de datos
     with db_connection.cursor() as cursor:
@@ -66,6 +70,10 @@ def upload_certificate():
         # Insertar el usuario, el certificado y la URL del archivo en la tabla user_certificate
         sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path) VALUES (%s, %s, %s)"
         cursor.execute(sql, (user_id, certificate_id, file_path))
+        
+        #Guardamos la fecha en la que se subio el archivo
+        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path, upload_time) VALUES (%s, %s, %s, %s)"
+        cursor.execute(sql, (user_id, certificate_id, file_path, current_time))
 
         # Obtener el ID del certificado recién insertado
         certificate_id = cursor.lastrowid
@@ -78,4 +86,4 @@ def upload_certificate():
 
 
 if __name__ == "__main__":
-    app.run(port=3000)  # Cambia el puerto a 5001
+    app.run(port=3000)  # Cambia el puerto a 3000
