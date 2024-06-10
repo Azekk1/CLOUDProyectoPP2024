@@ -1,14 +1,14 @@
 pip install flask flask-restful
 
-pip install jwt
+pip install pyjwt
 
 pip install pymysql
 
 npm install react
 
-npm install
-
 npm install @tanstack/react-table
+
+npm install jwt-decode
 
 
 Ejecutar frontend
