@@ -8,7 +8,7 @@ class TestStatisticsAPI(unittest.TestCase):
         self.app = app.test_client()
         self.app.testing = True
 
-    @patch('login.db_connection.cursor')
+    @patch('estadisticas.db_connection.cursor')
     def test_top10_certificates(self, mock_cursor):
         mock_cursor.return_value.fetchall.return_value = [
             ('Certificado 1', 100),
@@ -30,7 +30,7 @@ class TestStatisticsAPI(unittest.TestCase):
         self.assertEqual(data[0]['name'], 'Certificado 1')
         self.assertEqual(data[0]['numero_de_usuarios'], 100)
 
-    @patch('login.db_connection.cursor')
+    @patch('estadisticas.db_connection.cursor')
     def test_average_certificates_per_year(self, mock_cursor):
         mock_cursor.return_value.fetchall.return_value = [
             (2019, 5.0),
@@ -45,7 +45,7 @@ class TestStatisticsAPI(unittest.TestCase):
         self.assertEqual(data[0]['entry_year'], 2019)
         self.assertEqual(data[0]['promedio_certificados'], 5.0)
 
-    @patch('login.db_connection.cursor')
+    @patch('estadisticas.db_connection.cursor')
     def test_average_certificates_per_career(self, mock_cursor):
         mock_cursor.return_value.fetchall.return_value = [
             ('Engineering', 4.2),
@@ -60,7 +60,7 @@ class TestStatisticsAPI(unittest.TestCase):
         self.assertEqual(data[0]['name'], 'Engineering')
         self.assertEqual(data[0]['promedio_certificados'], 4.2)
 
-    @patch('login.db_connection.cursor')
+    @patch('estadisticas.db_connection.cursor')
     def test_careers_certificates(self, mock_cursor):
         mock_cursor.return_value.fetchall.return_value = [
             ('Engineering', 'Certificado A'),
