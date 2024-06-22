@@ -4,6 +4,7 @@ import pymysql
 import os
 import uuid
 from datetime import datetime
+from validacion import validar_certificado
 
 app = Flask(__name__)
 CORS(app)
@@ -56,6 +57,10 @@ def upload_certificate():
     file_path = os.path.join(CERTIFICATES_DIR, file_name)
     certificate_file.save(file_path)
 
+    # Llamada a la función de validación de certificados (debes implementar esta función)
+    aprooved = validar_certificado(file_path)  # Retorna True si el certificado es válido, False en caso contrario
+
+    
     # Crear una URL para el archivo
     file_path = f"http://your-server.com/{CERTIFICATES_DIR}/{file_name}"
     
@@ -67,13 +72,12 @@ def upload_certificate():
         # Obtener el ID del certificado basado en el nombre
         certificate_id = obtener_id_certificado(certificate_name)
         
-        # Insertar el usuario, el certificado y la URL del archivo en la tabla user_certificate
-        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (user_id, certificate_id, file_path))
-        
-        #Guardamos la fecha en la que se subio el archivo
-        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path, upload_time) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (user_id, certificate_id, file_path, current_time))
+        sql = """
+        INSERT INTO user_certificate (user_id, certificate_id, file_url, is_valid, upload_time)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        # Ejecutar la consulta SQL con los valores correspondientes
+        cursor.execute(sql, (user_id, certificate_id, file_path, aprooved, current_time))
 
         # Obtener el ID del certificado recién insertado
         certificate_id = cursor.lastrowid
