@@ -168,6 +168,7 @@ CREATE TABLE `users` (
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024),(2,1,1,'paco@alumnos.uai.cl','paco',2011),(3,1,1,'gil@alumnos.uai.cl','mono',2011);
+INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024,'Ejemplo','García Fernández'),(2,3,1,'paco@alumnos.uai.cl','paco',2011,'Paco Luis','Hernández Aguilera'),(3,4,1,'gil@alumnos.uai.cl','mono',2011,'Alfonso Guillermo','Gil Beltrán');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
