@@ -29,7 +29,7 @@ const DashboardFull = () => {
   }, []);
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden">
+    <div className="flex h-screen w-screen overflow-y-auto">
       <Sidebar>
         <Link to="/dashboard">
           <SidebarItems icon={perf} text="Mi perfil" />

@@ -1,3 +1,5 @@
+#Archivo para las pruebas unitarias
+
 import unittest
 from unittest.mock import patch
 from estadisticas import app

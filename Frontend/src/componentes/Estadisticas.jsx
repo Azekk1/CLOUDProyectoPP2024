@@ -118,10 +118,10 @@ const Estadisticas = () => {
   return (
     <div className="ml-12 grid grid-cols-2 gap-2 bg-secondary rounded-lg p-1 w-11/12 h-11/12">
       <div className="items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 col-span-2 h-16">
-        Info
+        Estadisticas disponibles
       </div>
       <div
-        className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
+        className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 overflow-y-auto ${
           openTable === "certificates" ? "text-white" : ""
         }`}
         onClick={() => handleToggleTable("certificates")}
@@ -162,14 +162,14 @@ const Estadisticas = () => {
       </div>
 
       {openTable && (
-        <div className="col-span-2 p-4">
+        <div className="col-span-2 p-4 overflow-y-auto" style={{ maxHeight: '60vh' }}>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4"
             onClick={() => setOpenTable(null)}
           >
             Cerrar tabla
           </button>
-          <table className="w-full bg-white rounded-lg overflow-hidden">
+          <table className="w-full bg-white rounded-lg overflow-y-auto">
             <thead className="bg-slate-700 text-white">
               <tr>
                 {tableConfigs[openTable].columns.map((col) => (
