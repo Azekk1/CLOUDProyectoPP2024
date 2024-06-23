@@ -8,8 +8,9 @@ npm install react
 
 npm install @tanstack/react-table
 
-npm install jwt-decode
+npm install jsonwebtoken
 
+pip install PyMuPDF pytesseract Pillow
 
 Ejecutar frontend
 1. Entrar en carpeta

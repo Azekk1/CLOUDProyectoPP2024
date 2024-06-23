@@ -1,5 +1,4 @@
 import fitz  # PyMuPDF
-import pytesseract
 from PIL import Image
 
 # Función para extraer texto de un PDF
@@ -32,3 +31,4 @@ def validar_certificado(ruta, nombre_estudiante):
         return "aprobado"
     else:
         return "rechazado"
+    
