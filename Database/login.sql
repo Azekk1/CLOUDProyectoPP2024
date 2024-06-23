@@ -124,7 +124,7 @@ CREATE TABLE `user_certificate` (
   `user_id` int NOT NULL,
   `certificate_id` int NOT NULL,
   `file_path` varchar(255) DEFAULT NULL,
-  `approved` char(1) DEFAULT NULL,
+  `approved` char(10) DEFAULT NULL,
   `upload_time` datetime DEFAULT NULL,
   KEY `user_id_idx` (`user_id`),
   KEY `certificate_id_idx` (`certificate_id`),
@@ -157,6 +157,8 @@ CREATE TABLE `users` (
   `user_name` varchar(50) NOT NULL,
   `password` text NOT NULL,
   `entry_year` smallint NOT NULL,
+  `names` varchar(100) NOT NULL,
+  `lastnames` varchar(100) NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -167,11 +169,11 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024),(2,1,1,'paco@alumnos.uai.cl','paco',2011),(3,1,1,'gil@alumnos.uai.cl','mono',2011);
 INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024,'Ejemplo','García Fernández'),(2,3,1,'paco@alumnos.uai.cl','paco',2011,'Paco Luis','Hernández Aguilera'),(3,4,1,'gil@alumnos.uai.cl','mono',2011,'Alfonso Guillermo','Gil Beltrán');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;

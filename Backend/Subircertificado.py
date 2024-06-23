@@ -4,6 +4,7 @@ import pymysql
 import os
 import uuid
 from datetime import datetime
+from validacion import validar_certificado
 
 app = Flask(__name__)
 CORS(app)
@@ -17,6 +18,14 @@ db_connection = pymysql.connect(
     database='login'
 )
 
+def obtener_nombre_usuario(user_id):
+    cursor = db_connection.cursor()
+    # Asegúrate de cambiar 'users' por el nombre real de tu tabla si es diferente
+    cursor.execute('SELECT names, lastnames FROM users WHERE user_id = %s', (user_id,))
+    user_data = cursor.fetchone()
+    cursor.close()  # Asegúrate de cerrar el cursor después de usarlo
+    # Une el nombre y apellido con un espacio si user_data no es None
+    return f"{user_data[0]} {user_data[1]}" if user_data else None
 
 # Función para obtener el ID del certificado desde la base de datos
 def obtener_id_certificado(nombre_certificado):
@@ -55,7 +64,14 @@ def upload_certificate():
     # Guardar el archivo en el servidor
     file_path = os.path.join(CERTIFICATES_DIR, file_name)
     certificate_file.save(file_path)
+    
+    #obtenemos el nombre del usuario para luego poder validar el certificado
+    nombre_estudiante = obtener_nombre_usuario(user_id)
 
+    # Llamada a la función de validación de certificados (debes implementar esta función)
+    aprooved = validar_certificado(file_path, nombre_estudiante)  # Retorna True si el certificado es válido, False en caso contrario
+
+    
     # Crear una URL para el archivo
     file_path = f"http://your-server.com/{CERTIFICATES_DIR}/{file_name}"
     
@@ -67,13 +83,12 @@ def upload_certificate():
         # Obtener el ID del certificado basado en el nombre
         certificate_id = obtener_id_certificado(certificate_name)
         
-        # Insertar el usuario, el certificado y la URL del archivo en la tabla user_certificate
-        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path) VALUES (%s, %s, %s)"
-        cursor.execute(sql, (user_id, certificate_id, file_path))
-        
-        #Guardamos la fecha en la que se subio el archivo
-        sql = "INSERT INTO user_certificate (user_id, certificate_id, file_path, upload_time) VALUES (%s, %s, %s, %s)"
-        cursor.execute(sql, (user_id, certificate_id, file_path, current_time))
+        sql = """
+        INSERT INTO user_certificate (user_id, certificate_id, file_path, approved, upload_time)
+        VALUES (%s, %s, %s, %s, %s)
+        """
+        # Ejecutar la consulta SQL con los valores correspondientes
+        cursor.execute(sql, (user_id, certificate_id, file_path, aprooved, current_time))
 
         # Obtener el ID del certificado recién insertado
         certificate_id = cursor.lastrowid

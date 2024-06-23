@@ -213,7 +213,7 @@ const Perfil = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decodedToken = jwtDecode(token);
+      const decodedToken = decodeJWT(token);
       const user_name = decodedToken.sub;
 
       fetch(`http://localhost:4000/api/users/${user_name}`)
