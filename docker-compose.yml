@@ -1,0 +1,74 @@
+version: '3.8'
+services:
+  login:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Backend
+      dockerfile: login.Dockerfile
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+  db:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Database
+      dockerfile: database.Dockerfile
+    ports:
+      - "3307:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - app-network
+
+  apis:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Backend
+      dockerfile: apis.Dockerfile
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  subircertificado:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Backend
+      dockerfile: subircertificado.Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  estadisticas:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Backend
+      dockerfile: estadisticas.Dockerfile
+    ports:
+      - "4001:4001"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  frontend:
+    build: 
+      context: C:\Users\rodri\Documents\universidad\prograprofesional\codigo-1\Frontend
+      dockerfile: frontend.Dockerfile
+    ports:
+      - "5173:5173"
+    networks:
+      - app-network
+    volumes:
+      - ./Frontend:/app
+      - /app/node_modules
+
+
+networks:
+  app-network:
+
+volumes:
+  db-data: 
