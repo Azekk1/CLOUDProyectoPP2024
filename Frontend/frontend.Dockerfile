@@ -1,22 +1,21 @@
-# Usar una imagen base de Node.js para construir la aplicación
+# Usar una imagen base de Node.js para construir la aplicación de frontend
 FROM node:18 as build
-
 
 # Establecer el directorio de trabajo
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
-COPY package.json package-lock.json ./
+# Copiar el archivo package.json
+COPY package.json ./
 
+# Copiar el archivo package-lock.json desde la carpeta de frontend
+COPY package-lock.json ./
 
-# Instalar las dependencias
-RUN npm install react
+# Instalar las dependencias de Node.js
+RUN npm install --no-cache
 
-RUN npm install @tanstack/react-table
+# Instalar las dependencias específicas adicionales
+RUN npm install --no-cache react @tanstack/react-table jsonwebtoken react-router-dom
 
-RUN npm install jsonwebtoken
-
-RUN npm install rollup
 # Copiar el resto del código de la aplicación
 COPY . .
 
