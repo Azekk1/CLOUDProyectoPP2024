@@ -1,0 +1,14 @@
+{
+    "stats": "General stats",
+    "top10": "Top 10 most common certificates",
+    "year": "Average number of certificates per entry year",
+    "average_career": "Average number of certificates per career",
+    "career_common": "Most common certificates per career",
+    "close": "Close",
+    "close table": "Close table",
+    "certificate_name": "Certificate name",
+    "students": "Number of students",
+    "entry_year": "Entry year",
+    "average_students": "Average certificates per student",
+    "career": "Career"
+ }

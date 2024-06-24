@@ -1,0 +1,14 @@
+{
+   "stats": "Estadísticas generales",
+   "top10": "Top 10 certificados más comunes",
+   "year": "Promedio de certificados por año de ingreso",
+   "average_career": "Promedio de certificados por carrera",
+   "career_common": "Certificados más comunes por carrera",
+   "close": "Cerrar",
+   "close table": "Cerrar tabla",
+   "certificate_name": "Nombre del certificado",
+   "students": "Número de alumnos",
+   "entry_year": "Año de ingreso",
+   "average_students": "Promedio certificados por alumno",
+   "career": "Carrera"
+}

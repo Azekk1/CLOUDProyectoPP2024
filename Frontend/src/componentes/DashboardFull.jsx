@@ -7,8 +7,11 @@ import perf from "../otros/perf.png";
 import students from "../otros/students.png";
 import { Link, Outlet } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Importa la función jwt_decode para decodificar el token JWT
+import { useTranslation } from "react-i18next";
+import "../Multilenguaje/i18n";
 
 const DashboardFull = () => {
+  const { t } = useTranslation("dashboard");
   const [usuario, setUsuario] = useState({ rol: "" }); // Inicializa con un objeto vacío
 
   useEffect(() => {
@@ -32,19 +35,19 @@ const DashboardFull = () => {
     <div className="flex h-screen w-screen overflow-y-auto">
       <Sidebar>
         <Link to="/dashboard">
-          <SidebarItems icon={perf} text="Mi perfil" />
+          <SidebarItems icon={perf} text={t('profile')} />
         </Link>
         <Link to="estadisticas">
-          <SidebarItems icon={stats} text="Estadísticas" />
+          <SidebarItems icon={stats} text={t('stats')} />
         </Link>
         {usuario.rol === "administrador" && (
           <Link to="tabla-alumnos">
-            <SidebarItems icon={students} text="Alumnos (Admin)" />
+            <SidebarItems icon={students} text={t('students')} />
           </Link>
         )}
         {(usuario.rol === "profesor" || usuario.rol === "administrador") && (
           <Link to="panel-admin">
-            <SidebarItems icon={certs} text="Panel de Administración" />
+            <SidebarItems icon={certs} text={t('panel')} />
           </Link>
         )}
       </Sidebar>
