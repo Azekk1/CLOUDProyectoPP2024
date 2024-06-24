@@ -169,20 +169,16 @@ def careers_certificates():
 
     return jsonify(result)
 
-#ruta para obtener los nombres de los certificados
+# Ruta para obtener los certificados con su estado de validación
 @app.route('/api/certificates', methods=['GET'])
 def all_certificates():
-    # Crear un cursor para ejecutar consultas SQL
     cursor = db_connection.cursor()
-
-    # Ejecutar una consulta para obtener todos los certificados
-    cursor.execute('SELECT certificate_id, name FROM certificate ORDER BY name;')
-    certificates = cursor.fetchall()  # Obtener todos los resultados
-
-    cursor.close()  # Cerrar el cursor
+    cursor.execute('SELECT certificate_id, name, validacion FROM certificate ORDER BY name;')
+    certificates = cursor.fetchall()
+    cursor.close()
 
     # Convertir los resultados a un formato de lista de diccionarios
-    result = [{'certificate_id': row[0], 'certificate_name': row[1]} for row in certificates]
+    result = [{'certificate_id': row[0], 'certificate_name': row[1], 'validacion': row[2]} for row in certificates]
 
     return jsonify(result)
 
