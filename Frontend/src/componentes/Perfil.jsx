@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import "../Multilenguaje/i18n";
 
 const decodeJWT = (token) => {
   try {
@@ -26,6 +29,8 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   if (!show) {
     return null;
   }
+
+  const { t } = useTranslation("dashboard");
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [certificates, setCertificates] = useState([]);
@@ -113,7 +118,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           onChange={(e) => setCertificateid(e.target.value)}
           className="mb-4 p-2 w-full border rounded-md"
         >
-          <option value="">Selecciona una certificación</option>
+          <option value="">{t("select_certificate")}</option>
           {certificates.map((cert) => (
             <option key={cert.certificate_id} value={cert.certificateId}>
               {cert.certificate_name}
@@ -124,7 +129,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           htmlFor="fileInput"
           className="transition-all bg-gray-500 cursor-pointer hover:bg-secondary text-white font-bold py-2 px-4 rounded-xl mr-4"
         >
-          Seleccionar archivo
+          {t("select_file")}
         </label>
         <input
           type="file"
@@ -139,13 +144,13 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
             className="transition-colors bg-accent hover:bg-accent/70 text-white px-4 py-2 rounded mr-2"
             onClick={onClose}
           >
-            Cancelar
+            {t("cancel")}
           </button>
           <button
             className="transition-colors bg-primary/80 hover:bg-primary/50 text-white px-4 py-2 rounded"
             onClick={handleSubmit}
           >
-            Subir
+            {t("submit")}
           </button>
         </div>
       </div>
@@ -154,6 +159,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
 };
 
 const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
+  const { t } = useTranslation("dashboard");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -170,7 +176,9 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 
   return (
     <div className="mt-8">
-      <h3 className="text-2xl font-semibold text-text">Certificaciones</h3>
+      <h3 className="text-2xl font-semibold text-text">
+        {t("certifications")}
+      </h3>
       <div className="relative mt-4">
         {certificaciones.length > 0 ? (
           <div className="flex items-center">
@@ -194,13 +202,13 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
             </button>
           </div>
         ) : (
-          <p className="text-text">No hay certificaciones disponibles</p>
+          <p className="text-text">{t("no_certifications")}</p>
         )}
         <div
           className="mt-4 p-4 bg-secondary rounded-lg border border-accent text-text cursor-pointer flex items-center justify-center"
           onClick={onAddCert}
         >
-          <span className="mr-2">Añadir certificación</span>
+          <span className="mr-2">{t("add")}</span>
           <span className="text-2xl font-bold">+</span>
         </div>
       </div>
@@ -209,13 +217,46 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 };
 
 const Perfil = () => {
+  const { t, i18n } = useTranslation("dashboard");
   const [usuario, setUsuario] = useState(null);
-  const [editando, setEditando] = useState(false);
-  const [nuevaDescripcion, setNuevaDescripcion] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+
+  // Definir traducciones de carreras según el idioma actual
+  const carreraTranslations = {
+    es: {
+      "Ingenieria Civil": t("Ingenieria Civil"),
+      "Ingenieria Comercial": t("Ingenieria Comercial"),
+      Derecho: t("Derecho"),
+      Psicologia: t("Psicologia"),
+      Periodismo: t("Periodismo"),
+      // Añadir más traducciones según sea necesario
+    },
+    en: {
+      "Ingenieria Civil": "Civil Engineering",
+      "Ingenieria Comercial": "Commercial Engineering",
+      Derecho: "Law",
+      Psicologia: "Psychology",
+      Periodismo: "Journalism",
+      // Añadir más traducciones según sea necesario
+    },
+  };
+
+  const rolTranslations = {
+    es: {
+      alumno: "Alumno",
+      profesor: "Profesor",
+      administrador: "Administrador",
+    },
+    en: {
+      alumno: "Student",
+      profesor: "Teacher",
+      administrador: "Admin",
+    },
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       const decodedToken = decodeJWT(token);
       const user_name = decodedToken.sub;
@@ -230,10 +271,8 @@ const Perfil = () => {
             carrera: data.career_name,
             generacion: data.entry_year,
             foto: "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
-            descripcion: data.descripcion || "Descripción no disponible",
-            certificaciones: [],
+            certificaciones: [], // Asume que debes llenar esto con datos reales
           });
-          setNuevaDescripcion(data.descripcion || "Descripción no disponible");
         })
         .catch((error) => console.error("Error fetching user data:", error));
     }
@@ -242,15 +281,6 @@ const Perfil = () => {
   if (!usuario) {
     return <div>Loading...</div>;
   }
-
-  const manejarCambioDescripcion = (e) => {
-    setNuevaDescripcion(e.target.value);
-  };
-
-  const guardarDescripcion = () => {
-    setUsuario({ ...usuario, descripcion: nuevaDescripcion });
-    setEditando(false);
-  };
 
   const agregarCertificacion = (certificacion) => {
     setUsuario((prevUsuario) => ({
@@ -272,48 +302,23 @@ const Perfil = () => {
             {usuario.nombre}
           </h2>
           <p className="text-text">{usuario.correo}</p>
-          <p className="text-text">{usuario.carrera}</p>
+          <p className="text-text">
+            {carreraTranslations[i18n.language][usuario.carrera]}
+          </p>
           {usuario.rol === "profesor" ? (
-            <p className="text-text">Profesor desde {usuario.generacion}</p>
+            <p className="text-text">
+              {t("teacher")}
+              {usuario.generacion}
+            </p>
           ) : (
-            <p className="text-text">Generación {usuario.generacion}</p>
+            <p className="text-text">
+              {t("generation")} {usuario.generacion}
+            </p>
           )}
-          <p className="text-text font-semibold">{usuario.rol}</p>
+          <p className="text-text font-semibold">
+            {rolTranslations[i18n.language][usuario.rol]}
+          </p>
         </div>
-      </div>
-      <div className="mt-4">
-        <h3 className="text-2xl font-semibold text-text">Descripción</h3>
-        {editando ? (
-          <div>
-            <textarea
-              className="mt-2 p-2 w-full border rounded-md"
-              value={nuevaDescripcion}
-              onChange={manejarCambioDescripcion}
-            />
-            <button
-              className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
-              onClick={guardarDescripcion}
-            >
-              Guardar
-            </button>
-            <button
-              className="mt-2 ml-2 px-4 py-2 bg-primary/40 text-text2 rounded-md"
-              onClick={() => setEditando(false)}
-            >
-              Cancelar
-            </button>
-          </div>
-        ) : (
-          <div>
-            <p className="mt-2 text-text">{usuario.descripcion}</p>
-            <button
-              className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
-              onClick={() => setEditando(true)}
-            >
-              Editar
-            </button>
-          </div>
-        )}
       </div>
       <CarruselCertificaciones
         certificaciones={usuario.certificaciones}

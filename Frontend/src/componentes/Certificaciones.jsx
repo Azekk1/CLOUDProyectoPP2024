@@ -2,25 +2,56 @@ import Section from "./Section";
 import LogoutButton from "./LogoutButton";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import "../Multilenguaje/i18n";
 
 const Certificaciones = () => {
-  const { t } = useTranslation("certifications");
+  const { t, i18n } = useTranslation("certifications");
 
-  const certificaciones = [
-    { id: 1, nombre: t("A"), carrera: t("A career") },
-    { id: 2, nombre: t("B"), carrera: t("B career") },
-    { id: 3, nombre: t("C"), carrera: t("C career") },
-    { id: 4, nombre: t("D"), carrera: t("D career") },
-    { id: 5, nombre: t("E"), carrera: t("E career") },
-    { id: 6, nombre: t("F"), carrera: t("F career") },
-    { id: 7, nombre: t("G"), carrera: t("G career") },
-    { id: 8, nombre: t("H"), carrera: t("H career") },
-  ];
+  // Definir traducciones de carreras según el idioma actual
+  const carreraTranslations = {
+    "es": {
+      "Ingenieria Civil": t("Ingenieria Civil"),
+      "Ingenieria Comercial": t("Ingenieria Comercial"),
+      "Derecho": t("Derecho"),
+      "Psicologia": t("Psicologia"),
+      "Periodismo": t("Periodismo")
+      // Añadir más traducciones según sea necesario
+    },
+    "en": {
+      "Ingenieria Civil": "Civil Engineering",
+      "Ingenieria Comercial": "Commercial Engineering",
+      "Derecho": "Law",
+      "Psicologia": "Psychology",
+      "Periodismo": "Journalism"
+      // Añadir más traducciones según sea necesario
+    }
+  };
 
-  const [filtroCarrera, setFiltroCarrera] = React.useState("Todas");
-  const [busqueda, setBusqueda] = React.useState("");
+  // Estado local para almacenar las certificaciones
+  const [certificaciones, setCertificaciones] = useState([]);
+
+  // Estado para manejar el filtro de carrera y búsqueda
+  const [filtroCarrera, setFiltroCarrera] = useState("Todas");
+  const [busqueda, setBusqueda] = useState("");
+
+  // Función para hacer la solicitud a la API y actualizar el estado
+  useEffect(() => {
+    const fetchCertificaciones = async () => {
+      try {
+        const response = await fetch('http://localhost:4001/api/all'); // Hacer la solicitud GET a la API
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); // Convertir la respuesta a formato JSON
+        setCertificaciones(data); // Actualizar el estado con los datos recibidos
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchCertificaciones(); // Llamar a la función para hacer la solicitud cuando el componente se monte
+  }, []);
 
   const handleFiltroCarreraChange = (carrera) => {
     setFiltroCarrera(carrera);
@@ -95,7 +126,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("A career"))}
+                  onClick={() => handleFiltroCarreraChange(t("Ingenieria Civil"))}
                 >
                   {t("civil")}
                 </li>
@@ -103,31 +134,31 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("B career"))}
+                  onClick={() => handleFiltroCarreraChange(t("Ingenieria Comercial"))}
                 >
                   {t("commercial")}
                 </li>
                 <li
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
-                    filtroCarrera === "Carrera 3" && "font-bold"
+                    filtroCarrera === "Derecho" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("C career"))}
+                  onClick={() => handleFiltroCarreraChange(t("Derecho"))}
                 >
                   {t("law")}
                 </li>
                 <li
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
-                    filtroCarrera === "Carrera 4" && "font-bold"
+                    filtroCarrera === "Psicologia" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("D career"))}
+                  onClick={() => handleFiltroCarreraChange(t("Psicologia"))}
                 >
                   {t("psychology")}
                 </li>
                 <li
                   className={`cursor-pointer mb-1 ${
-                    filtroCarrera === "Carrera 5" && "font-bold"
+                    filtroCarrera === "Periodismo" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("E career"))}
+                  onClick={() => handleFiltroCarreraChange(t("Periodismo"))}
                 >
                   {t("journalism")}
                 </li>
@@ -144,7 +175,7 @@ const Certificaciones = () => {
                   className="hover:transition-all duration-500 hover:bg-accent bg-secondary text-text rounded-lg p-4"
                 >
                   <h3 className="font-bold">{certificacion.nombre}</h3>
-                  <p>{certificacion.carrera}</p>
+                  <p>{carreraTranslations[i18n.language][certificacion.carrera]}</p>
                 </div>
               ))}
             </div>

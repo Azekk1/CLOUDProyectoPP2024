@@ -1,3 +1,5 @@
+#Archivo con las APIS para las estadisticas
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from datetime import datetime, timedelta, timezone
@@ -79,6 +81,24 @@ def careers_certificates():
 
      # Convertir los resultados a un formato de lista de diccionarios
     result = [{'career_name': row[0], 'certificate_name': row[1]} for row in careers]
+
+    return jsonify(result)
+
+
+#Ruta para traer todos los certificados
+@app.route('/api/all', methods=['GET'])
+def all_certificates():
+    # Crear un cursor para ejecutar consultas SQL
+    cursor = db_connection.cursor()
+
+    # Ejecutar una consulta para obtener el usuario por su nombre
+    cursor.execute('SELECT c.certificate_id, c.name, ca.name FROM certificate c INNER JOIN career ca ON c.career_id = ca.career_id;')
+    all = cursor.fetchall()  # Obtener el primer resultado (si hay alguno)
+
+    cursor.close()  # Cerrar el cursor
+
+     # Convertir los resultados a un formato de lista de diccionarios
+    result = [{'id': row[0], 'nombre': row[1], 'carrera': row[2]} for row in all]
 
     return jsonify(result)
 

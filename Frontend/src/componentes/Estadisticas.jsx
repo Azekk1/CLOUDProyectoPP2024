@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from 'axios';
+import { useTranslation } from "react-i18next";
+import "../Multilenguaje/i18n";
 
 const formatNumber = (num) => {
   const parsedNum = parseFloat(num);
@@ -9,8 +11,30 @@ const formatNumber = (num) => {
 };
 
 const Estadisticas = () => {
+  const { t, i18n } = useTranslation("stats");
   const stats =
     "items-center justify-center flex bg-background rounded-lg border border-accent text-text";
+
+  // Definir traducciones de carreras según el idioma actual
+  const carreraTranslations = {
+    "es": {
+      "Ingenieria Civil": t("Ingenieria Civil"),
+      "Ingenieria Comercial": t("Ingenieria Comercial"),
+      "Derecho": t("Derecho"),
+      "Psicologia": t("Psicologia"),
+      "Periodismo": t("Periodismo")
+      // Añadir más traducciones según sea necesario
+    },
+    "en": {
+      "Ingenieria Civil": "Civil Engineering",
+      "Ingenieria Comercial": "Commercial Engineering",
+      "Derecho": "Law",
+      "Psicologia": "Psychology",
+      "Periodismo": "Journalism"
+      // Añadir más traducciones según sea necesario
+    }
+  };
+
   const [openTable, setOpenTable] = useState(null);
   const [certificates, setCertificates] = useState([]);
   const [avgYear, setAvgYear] = useState([]);
@@ -86,49 +110,49 @@ const Estadisticas = () => {
   const tableConfigs = {
     certificates: {
       columns: [
-        { header: "Nombre del certificado", key: "name" },
-        { header: "Número de usuarios", key: "numero_de_usuarios" },
+        { header: t('certificate_name'), key: "name" },
+        { header: t('students'), key: "numero_de_usuarios" },
       ],
     },
     avgYear: {
       columns: [
-        { header: "Año de ingreso", key: "entry_year" },
+        { header: t('entry_year'), key: "entry_year" },
         {
-          header: "Promedio certificados por alumno",
+          header: t('average_students'),
           key: "promedio_certificados",
         },
       ],
     },
     avgCareer: {
       columns: [
-        { header: "Carrera", key: "name" },
+        { header: t('career'), key: "name" },
         {
-          header: "Promedio certificados por alumno",
+          header: t('average_students'),
           key: "promedio_certificados",
         },
       ],
     },
     careers: {
       columns: [
-        { header: "Carrera", key: "career_name" },
-        { header: "Nombre certificado", key: "certificate_name" },
+        { header: t('career'), key: "career_name" },
+        { header: t('certificate_name'), key: "certificate_name" },
       ],
     },
   };
   return (
     <div className="ml-12 grid grid-cols-2 gap-2 bg-secondary rounded-lg p-1 w-11/12 h-11/12">
       <div className="items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 col-span-2 h-16">
-        Info
+        {t('stats')}
       </div>
       <div
-        className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
+        className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 overflow-y-auto ${
           openTable === "certificates" ? "text-white" : ""
         }`}
         onClick={() => handleToggleTable("certificates")}
       >
         {openTable === "certificates"
-          ? "Cerrar"
-          : "Top 10 certificados más comunes"}
+          ? t('close')
+          : t('top10')}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -137,8 +161,8 @@ const Estadisticas = () => {
         onClick={() => handleToggleTable("avgYear")}
       >
         {openTable === "avgYear"
-          ? "Cerrar"
-          : "Promedio de certificados por año de ingreso"}
+          ? t('close')
+          : t('year')}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -147,8 +171,8 @@ const Estadisticas = () => {
         onClick={() => handleToggleTable("avgCareer")}
       >
         {openTable === "avgCareer"
-          ? "Cerrar"
-          : "Promedio de certificados por carrera"}
+          ? t('close')
+          : t('average_career')}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -157,19 +181,19 @@ const Estadisticas = () => {
         onClick={() => handleToggleTable("careers")}
       >
         {openTable === "careers"
-          ? "Cerrar"
-          : "Certificados más comunes por carrera"}
+          ? t('close')
+          : t('career_common')}
       </div>
 
       {openTable && (
-        <div className="col-span-2 p-4">
+        <div className="col-span-2 p-4 overflow-y-auto" style={{ maxHeight: '60vh' }}>
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4"
             onClick={() => setOpenTable(null)}
           >
-            Cerrar tabla
+            {t('close table')}
           </button>
-          <table className="w-full bg-white rounded-lg overflow-hidden">
+          <table className="w-full bg-white rounded-lg overflow-y-auto">
             <thead className="bg-slate-700 text-white">
               <tr>
                 {tableConfigs[openTable].columns.map((col) => (
@@ -215,7 +239,7 @@ const Estadisticas = () => {
                     className={index % 2 === 0 ? "bg-gray-100" : ""}
                   >
                     <td className="border px-4 py-2 bg-slate-600">
-                      {item.name}
+                      {carreraTranslations[i18n.language][item.name]}
                     </td>
                     <td className="border px-4 py-2 bg-slate-600">
                       {formatNumber(item.promedio_certificados)}
@@ -229,7 +253,7 @@ const Estadisticas = () => {
                     className={index % 2 === 0 ? "bg-gray-100" : ""}
                   >
                     <td className="border px-4 py-2 bg-slate-600">
-                      {item.career_name}
+                      {carreraTranslations[i18n.language][item.career_name]}
                     </td>
                     <td className="border px-4 py-2 bg-slate-600">
                       {item.certificate_name}
