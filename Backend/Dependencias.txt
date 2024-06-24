@@ -1,0 +1,10 @@
+flask
+flask-restful
+pyjwt
+pymysql
+PyMuPDF
+pytesseract
+Pillow
+flask_cors
+cryptography
+
