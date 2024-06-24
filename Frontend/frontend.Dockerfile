@@ -13,9 +13,6 @@ COPY package-lock.json ./
 # Instalar las dependencias de Node.js
 RUN npm install --no-cache
 
-# Instalar las dependencias específicas adicionales
-RUN npm install --no-cache react @tanstack/react-table jsonwebtoken react-router-dom
-
 # Copiar el resto del código de la aplicación
 COPY . .
 
