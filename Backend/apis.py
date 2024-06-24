@@ -3,14 +3,15 @@ from flask_cors import CORS
 from datetime import datetime, timedelta, timezone
 import pymysql
 import logging
+import os
 
 app = Flask(__name__)
 CORS(app)
 
 # Configuración de la conexión a la base de datos MySQL
 db_connection = pymysql.connect(
-    host='localhost',
-    port=3307,
+    host='db',
+    port=3306,
     user='myuser',
     password='mypassword',
     database='login'
@@ -186,5 +187,5 @@ def all_certificates():
 
     return jsonify(result)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=4000)
+if __name__ == "__main__":
+    app.run(port=4000) 
