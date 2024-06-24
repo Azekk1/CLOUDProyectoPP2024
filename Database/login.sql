@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: login
+-- Host: 127.0.0.1    Database: login
 -- ------------------------------------------------------
--- Server version	8.3.0
+-- Server version	8.0.37
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -35,7 +35,7 @@ CREATE TABLE `career` (
 
 LOCK TABLES `career` WRITE;
 /*!40000 ALTER TABLE `career` DISABLE KEYS */;
-INSERT INTO `career` VALUES (1,'Ingenieria Civill'),(2,'Ingenieria Comercial'),(3,'Derecho'),(4,'Periodismo'),(5,'Psicologia');
+INSERT INTO `career` VALUES (1,'Ingenieria Civil'),(2,'Ingenieria Comercial'),(3,'Derecho'),(4,'Periodismo'),(5,'Psicologia');
 /*!40000 ALTER TABLE `career` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -49,7 +49,10 @@ DROP TABLE IF EXISTS `certificate`;
 CREATE TABLE `certificate` (
   `certificate_id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`certificate_id`)
+  `career_id` int NOT NULL,
+  PRIMARY KEY (`certificate_id`),
+  KEY `fk_career_id_idx` (`career_id`),
+  CONSTRAINT `fk_career_id` FOREIGN KEY (`career_id`) REFERENCES `career` (`career_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -59,34 +62,8 @@ CREATE TABLE `certificate` (
 
 LOCK TABLES `certificate` WRITE;
 /*!40000 ALTER TABLE `certificate` DISABLE KEYS */;
-INSERT INTO `certificate` VALUES (1,'a'),(2,'b'),(3,'c'),(4,'d'),(5,'e');
+INSERT INTO `certificate` VALUES (1,'a',1),(2,'b',2),(3,'c',1),(4,'d',4),(5,'e',1);
 /*!40000 ALTER TABLE `certificate` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `certificate_career`
---
-
-DROP TABLE IF EXISTS `certificate_career`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `certificate_career` (
-  `certificate_id` int NOT NULL,
-  `career_id` int NOT NULL,
-  KEY `certificate_id_idx` (`certificate_id`),
-  KEY `career_id_idx` (`career_id`),
-  CONSTRAINT `fk_career_id_certificates` FOREIGN KEY (`career_id`) REFERENCES `career` (`career_id`),
-  CONSTRAINT `fk_certificate_id_carrers` FOREIGN KEY (`certificate_id`) REFERENCES `certificate` (`certificate_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `certificate_career`
---
-
-LOCK TABLES `certificate_career` WRITE;
-/*!40000 ALTER TABLE `certificate_career` DISABLE KEYS */;
-/*!40000 ALTER TABLE `certificate_career` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -169,11 +146,10 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024,'Ejemplo','García Fernández'),(2,3,1,'paco@alumnos.uai.cl','paco',2011,'Paco Luis','Hernández Aguilera'),(3,4,1,'gil@alumnos.uai.cl','mono',2011,'Alfonso Guillermo','Gil Beltrán');
+INSERT INTO `users` VALUES (1,1,1,'ejemplo@alumnos.uai.cl','hola',2024,'Ejemplo','García Fernández'),(2,1,1,'paco@alumnos.uai.cl','paco',2011,'Paco Luis','Hernández Aguilera'),(3,4,1,'gil@alumnos.uai.cl','mono',2011,'Alfonso Guillermo','Gil Beltrán');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
@@ -183,4 +159,5 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-06 13:03:55
+-- Dump completed on 2024-06-23 20:30:04
+
