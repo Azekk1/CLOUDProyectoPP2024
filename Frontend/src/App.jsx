@@ -41,7 +41,7 @@ const App = () => {
 
   return (
     <>
-      <div className="pt-[2.75rem] lg:pt-[4.25rem] overflow-hidden w-screen bg-background">
+      <div className="pt-[2.75rem] lg:pt-[4.25rem] overflow-hidden w-screen min-h-screen bg-background">
         <Header isAuthenticated={isAuthenticated} />
         <Routes>
           <Route path="/" element={<Home />} />

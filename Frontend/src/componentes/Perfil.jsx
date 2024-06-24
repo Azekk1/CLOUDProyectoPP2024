@@ -1,42 +1,47 @@
-import React, { useState, useEffect  } from "react";
-import { useTranslation } from 'react-i18next';
-
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const decodeJWT = (token) => {
   try {
-    const base64Url = token.split('.')[1]; // Obtiene la parte del payload del token
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Reemplaza caracteres URL-safe
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
+    const base64Url = token.split(".")[1]; // Obtiene la parte del payload del token
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/"); // Reemplaza caracteres URL-safe
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
 
     return JSON.parse(jsonPayload);
   } catch (e) {
-    console.error('Error decodificando el JWT:', e);
+    console.error("Error decodificando el JWT:", e);
     return null;
   }
 };
 
-const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => { // Cambiado certificateName a certificateId
+const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
+  // Cambiado certificateName a certificateId
   if (!show) {
     return null;
   }
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [certificates, setCertificates] = useState([]);
-  const [certificate_id, setCertificateid] = useState(''); // Esto podría necesitar ser cambiado o eliminado dependiendo de su uso
+  const [certificate_id, setCertificateid] = useState(""); // Esto podría necesitar ser cambiado o eliminado dependiendo de su uso
 
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:4000/api/certificates');
+        const response = await fetch("http://127.0.0.1:4000/api/certificates");
         if (!response.ok) {
-          throw new Error('Error al cargar los certificados');
+          throw new Error("Error al cargar los certificados");
         }
         const data = await response.json();
         setCertificates(data);
       } catch (error) {
-        console.error('Error al cargar los certificados:', error);
+        console.error("Error al cargar los certificados:", error);
       }
     };
 
@@ -49,54 +54,53 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => { // Camb
 
   const handleSubmit = async () => {
     if (!selectedFile) {
-      alert('Por favor, selecciona un archivo primero.');
+      alert("Por favor, selecciona un archivo primero.");
       return;
-    };
-    console.log('al comienzo',certificate_id)
+    }
+    console.log("al comienzo", certificate_id);
     if (!certificate_id) {
-      alert('Por favor, selecciona un certificado.');
+      alert("Por favor, selecciona un certificado.");
       return;
     }
 
-    const token = localStorage.getItem('token');
-      if (!token) {
-        alert('No se encontró el token de autenticación.');
-        return;
-      };
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("No se encontró el token de autenticación.");
+      return;
+    }
 
-    alert('antes de decodificar');
+    alert("antes de decodificar");
     console.log(token);
 
     const decoded = decodeJWT(token);
     const userId = decoded.user_id;
-    alert('se descifro el token');
+    alert("se descifro el token");
 
-    console.log('segundo',certificate_id) // Cambiado de certificateName a certificateId
+    console.log("segundo", certificate_id); // Cambiado de certificateName a certificateId
     const formData = new FormData();
-    formData.append('user_id', userId);
-    formData.append('certificate_name', certificate_id); // Cambiado de certificateName a certificateId
-    formData.append('file', selectedFile);
+    formData.append("user_id", userId);
+    formData.append("certificate_name", certificate_id); // Cambiado de certificateName a certificateId
+    formData.append("file", selectedFile);
 
     try {
-      const response = await fetch('http://127.0.0.1:3000/dashboard', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:3000/dashboard", {
+        method: "POST",
         body: formData,
       });
-      alert('se hizo la solicitud')
+      alert("se hizo la solicitud");
 
       if (!response.ok) {
-        throw new Error('Error al subir el archivo');
+        throw new Error("Error al subir el archivo");
       }
 
       const result = await response.json();
       console.log(result);
       onClose(); // Considera llamar a onAddCert si necesitas actualizar algún estado externo
     } catch (error) {
-      console.error('Error al subir el archivo:', error);
-      alert('Error al subir el archivo. Por favor, intenta de nuevo.');
+      console.error("Error al subir el archivo:", error);
+      alert("Error al subir el archivo. Por favor, intenta de nuevo.");
     }
   };
-
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50 z-50">
@@ -220,14 +224,14 @@ const Perfil = () => {
         .then((response) => response.json())
         .then((data) => {
           setUsuario({
-            nombre: `${data.first_name} ${data.last_name}`,
+            nombre: `${data.names} ${data.lastnames}`,
             correo: data.user_name,
             rol: data.role_name,
             carrera: data.career_name,
             generacion: data.entry_year,
             foto: "https://t3.ftcdn.net/jpg/05/16/27/58/360_F_516275801_f3Fsp17x6HQK0xQgDQEELoTuERO4SsWV.jpg",
             descripcion: data.descripcion || "Descripción no disponible",
-            certificaciones: [], // Asume que debes llenar esto con datos reales
+            certificaciones: [],
           });
           setNuevaDescripcion(data.descripcion || "Descripción no disponible");
         })

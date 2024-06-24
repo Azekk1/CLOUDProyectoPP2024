@@ -1,41 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
 
 const PanelAdmin = () => {
-  const [certificaciones, setCertificaciones] = useState([]);
-  const [carreraUsuario, setCarreraUsuario] = useState("");
+  const [tipoValidaciones, setTipoValidaciones] = useState({}); // Estado para los tipos de validación por certificado
+  const [certificates, setCertificates] = useState([]);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      const user_name = decodedToken.sub;
+    const fetchCertificates = async () => {
+      try {
+        const response = await fetch("http://127.0.0.1:4000/api/certificates");
+        if (!response.ok) {
+          throw new Error("Error al cargar los certificados");
+        }
+        const data = await response.json();
+        setCertificates(data);
+        // Inicializar los estados de tipo de validación para cada certificado
+        const initialValidations = {};
+        data.forEach((certificate) => {
+          initialValidations[certificate.certificate_id] = null; // Inicialmente ningún tipo de validación seleccionado
+        });
+        setTipoValidaciones(initialValidations);
+      } catch (error) {
+        console.error("Error al cargar los certificados:", error);
+      }
+    };
 
-      fetch(`http://localhost:4000/api/users/${user_name}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setCarreraUsuario(data.career_name);
-        })
-        .catch((error) => console.error("Error fetching user data:", error));
-    }
+    fetchCertificates();
   }, []);
 
-  useEffect(() => {
-    if (carreraUsuario) {
-      fetch(`http://localhost:4000/api/certifications/${carreraUsuario}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setCertificaciones(data);
-        })
-        .catch((error) =>
-          console.error("Error fetching certifications:", error)
-        );
-    }
-  }, [carreraUsuario]);
+  const handleSelectManual = (certificateId) => {
+    setTipoValidaciones((prevValidations) => ({
+      ...prevValidations,
+      [certificateId]:
+        prevValidations[certificateId] !== "manual" ? "manual" : null,
+    }));
+  };
+
+  const handleSelectAutomatica = (certificateId) => {
+    setTipoValidaciones((prevValidations) => ({
+      ...prevValidations,
+      [certificateId]:
+        prevValidations[certificateId] !== "automatica" ? "automatica" : null,
+    }));
+  };
 
   return (
     <div className="container mx-auto p-6 bg-background rounded-lg shadow-lg">
-      <h1 className="text-3xl font-semibold text-text mb-6 justify-center text-center">
+      <h1 className="text-3xl font-semibold text-text mb-6 text-center">
         Panel de Administración
       </h1>
 
@@ -43,21 +53,43 @@ const PanelAdmin = () => {
         <h2 className="text-2xl font-semibold text-text mb-4">
           Certificaciones
         </h2>
-        <ul>
-          {certificaciones.map((certificacion) => (
-            <li
-              key={certificacion.id}
-              className="mb-4 p-4 border rounded-md bg-secondary"
-            >
-              <div className="flex justify-between items-center">
-                <div>
-                  <h3 className="text-xl font-bold">{certificacion.nombre}</h3>
-                  <p>{certificacion.carrera}</p>
-                </div>
-              </div>
-            </li>
-          ))}
-        </ul>
+      </div>
+
+      <div className="grid gap-4">
+        {certificates.map((certificate) => (
+          <div
+            key={certificate.certificate_id}
+            className="bg-secondary p-2 rounded-md border border-primary"
+          >
+            <h2 className="text-lg font-semibold text-text mb-1">
+              Certificación: {certificate.certificate_name}
+            </h2>
+            <div className="flex space-x-2">
+              <button
+                className={`flex-1 p-2 text-center ${
+                  tipoValidaciones[certificate.certificate_id] === "manual"
+                    ? "bg-sky-500 text-white rounded-md"
+                    : "bg-gray-200 text-text"
+                }`}
+                onClick={() => handleSelectManual(certificate.certificate_id)}
+              >
+                Manual
+              </button>
+              <button
+                className={`flex-1 p-2 text-center ${
+                  tipoValidaciones[certificate.certificate_id] === "automatica"
+                    ? "bg-sky-500 text-white rounded-md"
+                    : "bg-gray-200 text-text"
+                }`}
+                onClick={() =>
+                  handleSelectAutomatica(certificate.certificate_id)
+                }
+              >
+                Automática
+              </button>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );

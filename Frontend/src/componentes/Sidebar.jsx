@@ -7,7 +7,7 @@ const Sidebar = ({ children }) => {
 
   return (
     <aside
-      className={`h-screen bg-background shadow-xl border-r-2 border-secondary sticky transition-all duration-500 min-h-screen z-0 ${
+      className={`h-dvh bg-background shadow-xl border-r-2 border-secondary sticky transition-all duration-500 min-h-screen z-0 ${
         deployed ? "w-64" : "w-18"
       }`}
     >

@@ -64,8 +64,8 @@ def get_user_by_username(user_name):
             'user_name': user[3],
             'password': user[4],
             'entry_year': user[5],
-            'first_name': user[6],
-            'last_name': user[7]
+            'names': user[6],
+            'lastnames': user[7]
         }
         return jsonify(user_data), 200
     else:
