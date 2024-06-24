@@ -34,7 +34,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:4000/api/certificates");
+        const response = await fetch("http://localhost:4000/api/certificates");
         if (!response.ok) {
           throw new Error("Error al cargar los certificados");
         }
@@ -69,25 +69,26 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
       return;
     }
 
-    alert("antes de decodificar");
+
     console.log(token);
 
     const decoded = decodeJWT(token);
     const userId = decoded.user_id;
-    alert("se descifro el token");
+
 
     console.log("segundo", certificate_id); // Cambiado de certificateName a certificateId
     const formData = new FormData();
     formData.append("user_id", userId);
+    console.log("id usuario", userId); // Cambiado de certificateName a certificateId
     formData.append("certificate_name", certificate_id); // Cambiado de certificateName a certificateId
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://127.0.0.1:3000/dashboard", {
+      const response = await fetch("http://localhost:3000/dashboard", {
         method: "POST",
         body: formData,
       });
-      alert("se hizo la solicitud");
+
 
       if (!response.ok) {
         throw new Error("Error al subir el archivo");
@@ -95,6 +96,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
 
       const result = await response.json();
       console.log(result);
+      alert("se subio exitosamente el archivo");
       onClose(); // Considera llamar a onAddCert si necesitas actualizar algún estado externo
     } catch (error) {
       console.error("Error al subir el archivo:", error);

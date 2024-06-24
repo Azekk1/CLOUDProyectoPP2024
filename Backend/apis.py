@@ -174,12 +174,12 @@ def careers_certificates():
 @app.route('/api/certificates', methods=['GET'])
 def all_certificates():
     cursor = db_connection.cursor()
-    cursor.execute('SELECT certificate_id, name, validacion FROM certificate ORDER BY name;')
+    cursor.execute('SELECT certificate_id, name FROM certificate ORDER BY name;')
     certificates = cursor.fetchall()
     cursor.close()
 
     # Convertir los resultados a un formato de lista de diccionarios
-    result = [{'certificate_id': row[0], 'certificate_name': row[1], 'validacion': row[2]} for row in certificates]
+    result = [{'certificate_id': row[0], 'certificate_name': row[1]} for row in certificates]
 
     return jsonify(result)
 
