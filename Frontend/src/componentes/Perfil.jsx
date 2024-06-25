@@ -34,12 +34,13 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:4000/api/certificates");
-        if (!response.ok) {
+        const response = await axios.get(
+          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/certificates"
+        );
+        if (!response.data) {
           throw new Error("Error al cargar los certificados");
         }
-        const data = await response.json();
-        setCertificates(data);
+        setCertificates(response.data);
       } catch (error) {
         console.error("Error al cargar los certificados:", error);
       }
@@ -220,9 +221,12 @@ const Perfil = () => {
       const decodedToken = decodeJWT(token);
       const user_name = decodedToken.sub;
 
-      fetch(`http://localhost:4000/api/users/${user_name}`)
-        .then((response) => response.json())
-        .then((data) => {
+      axios
+        .get(
+          `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/users/${user_name}`
+        )
+        .then((response) => {
+          const data = response.data;
           setUsuario({
             nombre: `${data.names} ${data.lastnames}`,
             correo: data.user_name,

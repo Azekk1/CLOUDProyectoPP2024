@@ -4,7 +4,6 @@ from datetime import datetime, timedelta, timezone
 import pymysql
 import jwt
 
-
 # Crear un objeto de zona horaria UTC
 utc_timezone = timezone.utc
 
@@ -12,12 +11,12 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'abcd1234'
 CORS(app)
 
-# Configuración de la conexión a la base de datos MySQL
+# Configuración de la conexión a la base de datos MySQL en Azure
 db_connection = pymysql.connect(
-    host='db',
+    host='basededatosproyectoprogra.mysql.database.azure.com',
     port=3306,
-    user='myuser',
-    password='mypassword',
+    user='myuser@basededatosproyectoprogra',
+    password='Mypassword.',
     database='login'
 )
 
@@ -59,4 +58,4 @@ def logout():
     return jsonify({'message': 'Sesión cerrada exitosamente'}), 200
 
 if __name__ == "__main__":
-    app.run(port=5000) 
+    app.run(port=5000)

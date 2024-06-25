@@ -2,7 +2,7 @@ import Section from "./Section";
 import LogoutButton from "./LogoutButton";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import "../Multilenguaje/i18n";
 
 const Certificaciones = () => {
@@ -10,22 +10,22 @@ const Certificaciones = () => {
 
   // Definir traducciones de carreras según el idioma actual
   const carreraTranslations = {
-    "es": {
+    es: {
       "Ingenieria Civil": t("Ingenieria Civil"),
       "Ingenieria Comercial": t("Ingenieria Comercial"),
-      "Derecho": t("Derecho"),
-      "Psicologia": t("Psicologia"),
-      "Periodismo": t("Periodismo")
+      Derecho: t("Derecho"),
+      Psicologia: t("Psicologia"),
+      Periodismo: t("Periodismo"),
       // Añadir más traducciones según sea necesario
     },
-    "en": {
+    en: {
       "Ingenieria Civil": "Civil Engineering",
       "Ingenieria Comercial": "Commercial Engineering",
-      "Derecho": "Law",
-      "Psicologia": "Psychology",
-      "Periodismo": "Journalism"
+      Derecho: "Law",
+      Psicologia: "Psychology",
+      Periodismo: "Journalism",
       // Añadir más traducciones según sea necesario
-    }
+    },
   };
 
   // Estado local para almacenar las certificaciones
@@ -39,14 +39,16 @@ const Certificaciones = () => {
   useEffect(() => {
     const fetchCertificaciones = async () => {
       try {
-        const response = await fetch('http://localhost:4001/api/all'); // Hacer la solicitud GET a la API
+        const response = await fetch(
+          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/all"
+        ); // Actualizar la URL del backend en Azure
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
         const data = await response.json(); // Convertir la respuesta a formato JSON
         setCertificaciones(data); // Actualizar el estado con los datos recibidos
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
@@ -126,7 +128,9 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("Ingenieria Civil"))}
+                  onClick={() =>
+                    handleFiltroCarreraChange(t("Ingenieria Civil"))
+                  }
                 >
                   {t("civil")}
                 </li>
@@ -134,7 +138,9 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("Ingenieria Comercial"))}
+                  onClick={() =>
+                    handleFiltroCarreraChange(t("Ingenieria Comercial"))
+                  }
                 >
                   {t("commercial")}
                 </li>
@@ -175,7 +181,9 @@ const Certificaciones = () => {
                   className="hover:transition-all duration-500 hover:bg-accent bg-secondary text-text rounded-lg p-4"
                 >
                   <h3 className="font-bold">{certificacion.nombre}</h3>
-                  <p>{carreraTranslations[i18n.language][certificacion.carrera]}</p>
+                  <p>
+                    {carreraTranslations[i18n.language][certificacion.carrera]}
+                  </p>
                 </div>
               ))}
             </div>

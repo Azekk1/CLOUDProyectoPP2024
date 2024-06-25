@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 const PanelAdmin = () => {
   const [tipoValidaciones, setTipoValidaciones] = useState({}); // Estado para los tipos de validación por certificado
@@ -7,15 +8,16 @@ const PanelAdmin = () => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:4000/api/certificates");
-        if (!response.ok) {
+        const response = await axios.get(
+          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/certificates"
+        );
+        if (!response.data) {
           throw new Error("Error al cargar los certificados");
         }
-        const data = await response.json();
-        setCertificates(data);
+        setCertificates(response.data);
         // Inicializar los estados de tipo de validación para cada certificado
         const initialValidations = {};
-        data.forEach((certificate) => {
+        response.data.forEach((certificate) => {
           initialValidations[certificate.certificate_id] = null; // Inicialmente ningún tipo de validación seleccionado
         });
         setTipoValidaciones(initialValidations);

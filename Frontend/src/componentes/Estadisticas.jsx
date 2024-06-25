@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from 'axios';
+import axios from "axios";
 import { useTranslation } from "react-i18next";
 import "../Multilenguaje/i18n";
 
@@ -17,22 +17,22 @@ const Estadisticas = () => {
 
   // Definir traducciones de carreras según el idioma actual
   const carreraTranslations = {
-    "es": {
+    es: {
       "Ingenieria Civil": t("Ingenieria Civil"),
       "Ingenieria Comercial": t("Ingenieria Comercial"),
-      "Derecho": t("Derecho"),
-      "Psicologia": t("Psicologia"),
-      "Periodismo": t("Periodismo")
+      Derecho: t("Derecho"),
+      Psicologia: t("Psicologia"),
+      Periodismo: t("Periodismo"),
       // Añadir más traducciones según sea necesario
     },
-    "en": {
+    en: {
       "Ingenieria Civil": "Civil Engineering",
       "Ingenieria Comercial": "Commercial Engineering",
-      "Derecho": "Law",
-      "Psicologia": "Psychology",
-      "Periodismo": "Journalism"
+      Derecho: "Law",
+      Psicologia: "Psychology",
+      Periodismo: "Journalism",
       // Añadir más traducciones según sea necesario
-    }
+    },
   };
 
   const [openTable, setOpenTable] = useState(null);
@@ -43,33 +43,33 @@ const Estadisticas = () => {
 
   const callDebugLog = (json) => {
     if (json.length == 0) {
-      axios.get('http://localhost:4000/debug')
-        .then(response => {
+      axios
+        .get("http://localhost:4000/debug")
+        .then((response) => {
           console.log(response.data);
         })
-        .catch(error => {
+        .catch((error) => {
           callErrorLog();
         });
     }
   };
 
   const callErrorLog = () => {
-    axios.get('http://localhost:4000/error')
-      .then(response => {
-        console.log(response.data);
-      })
+    axios.get("http://localhost:4000/error").then((response) => {
+      console.log(response.data);
+    });
   };
 
   const callInfoLog = (tabla) => {
-    axios.get('http://localhost:4000/info')
-    .then(response => {
+    axios.get("http://localhost:4000/info").then((response) => {
       console.log(response.data, tabla);
-    })
-  }
-
+    });
+  };
 
   const fetchData = async (endpoint, setter) => {
-    const response = await fetch(`http://localhost:4000/api/${endpoint}`);
+    const response = await fetch(
+      `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/${endpoint}`
+    );
     const data = await response.json();
     setter(data);
     callDebugLog(data);
@@ -110,39 +110,39 @@ const Estadisticas = () => {
   const tableConfigs = {
     certificates: {
       columns: [
-        { header: t('certificate_name'), key: "name" },
-        { header: t('students'), key: "numero_de_usuarios" },
+        { header: t("certificate_name"), key: "name" },
+        { header: t("students"), key: "numero_de_usuarios" },
       ],
     },
     avgYear: {
       columns: [
-        { header: t('entry_year'), key: "entry_year" },
+        { header: t("entry_year"), key: "entry_year" },
         {
-          header: t('average_students'),
+          header: t("average_students"),
           key: "promedio_certificados",
         },
       ],
     },
     avgCareer: {
       columns: [
-        { header: t('career'), key: "name" },
+        { header: t("career"), key: "name" },
         {
-          header: t('average_students'),
+          header: t("average_students"),
           key: "promedio_certificados",
         },
       ],
     },
     careers: {
       columns: [
-        { header: t('career'), key: "career_name" },
-        { header: t('certificate_name'), key: "certificate_name" },
+        { header: t("career"), key: "career_name" },
+        { header: t("certificate_name"), key: "certificate_name" },
       ],
     },
   };
   return (
     <div className="ml-12 grid grid-cols-2 gap-2 bg-secondary rounded-lg p-1 w-11/12 h-11/12">
       <div className="items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 col-span-2 h-16">
-        {t('stats')}
+        {t("stats")}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 overflow-y-auto ${
@@ -150,9 +150,7 @@ const Estadisticas = () => {
         }`}
         onClick={() => handleToggleTable("certificates")}
       >
-        {openTable === "certificates"
-          ? t('close')
-          : t('top10')}
+        {openTable === "certificates" ? t("close") : t("top10")}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -160,9 +158,7 @@ const Estadisticas = () => {
         }`}
         onClick={() => handleToggleTable("avgYear")}
       >
-        {openTable === "avgYear"
-          ? t('close')
-          : t('year')}
+        {openTable === "avgYear" ? t("close") : t("year")}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -170,9 +166,7 @@ const Estadisticas = () => {
         }`}
         onClick={() => handleToggleTable("avgCareer")}
       >
-        {openTable === "avgCareer"
-          ? t('close')
-          : t('average_career')}
+        {openTable === "avgCareer" ? t("close") : t("average_career")}
       </div>
       <div
         className={`items-center justify-center flex bg-slate-700 rounded-lg border border-slate-800 h-40 transition hover:bg-slate-800 ${
@@ -180,18 +174,19 @@ const Estadisticas = () => {
         }`}
         onClick={() => handleToggleTable("careers")}
       >
-        {openTable === "careers"
-          ? t('close')
-          : t('career_common')}
+        {openTable === "careers" ? t("close") : t("career_common")}
       </div>
 
       {openTable && (
-        <div className="col-span-2 p-4 overflow-y-auto" style={{ maxHeight: '60vh' }}>
+        <div
+          className="col-span-2 p-4 overflow-y-auto"
+          style={{ maxHeight: "60vh" }}
+        >
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-lg mb-4"
             onClick={() => setOpenTable(null)}
           >
-            {t('close table')}
+            {t("close table")}
           </button>
           <table className="w-full bg-white rounded-lg overflow-y-auto">
             <thead className="bg-slate-700 text-white">

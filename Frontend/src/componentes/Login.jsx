@@ -24,13 +24,16 @@ const Login = ({ setIsAuthenticated }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
+      const response = await fetch(
+        "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, password }),
+        }
+      );
       const data = await response.json();
       if (response.ok) {
         console.log("Inicio de sesión exitoso");
@@ -40,7 +43,7 @@ const Login = ({ setIsAuthenticated }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("expirationTime", expirationTime);
 
-        setIsAuthenticated(true); // Aquí se actualiza el estado de autenticación
+        setIsAuthenticated(true); // Actualiza el estado de autenticación
         navigate("/redirect");
         navigate("/dashboard", { state: { username: userData.user_name } });
       } else {

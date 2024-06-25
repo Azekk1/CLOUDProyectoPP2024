@@ -9,7 +9,9 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       // Envía una solicitud al backend para cerrar sesión
-      await axios.post("http://localhost:5000/logout");
+      await axios.post(
+        "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/logout"
+      );
 
       // Eliminar el token de acceso del localStorage
       localStorage.removeItem("token");
