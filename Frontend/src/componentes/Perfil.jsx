@@ -84,10 +84,13 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://127.0.0.1:3000/dashboard", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://frontendproyecto2024.azurewebsites.net/dashboard",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
       alert("se hizo la solicitud");
 
       if (!response.ok) {

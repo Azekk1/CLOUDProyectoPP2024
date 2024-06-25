@@ -13,7 +13,7 @@ CORS(app)
 db_connection = pymysql.connect(
     host='basededatosproyectoprogra.mysql.database.azure.com',
     port=3306,
-    user='myuser@basededatosproyectoprogra',
+    user='myuser',
     password='Mypassword.',
     database='login',
     ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
@@ -166,5 +166,8 @@ def all_certificates():
 
     return jsonify(result)
 
-if __name__ == '__main__':
-    app.run(debug=True, port=4001)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 4001))
+    app.run(host='0.0.0.0', port=port)
+
+print("conectado estadisticas.py")

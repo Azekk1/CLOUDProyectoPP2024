@@ -4,7 +4,7 @@ import pymysql
 import os
 import uuid
 from datetime import datetime
-import fitz  # PyMuPDF
+import fitz
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +13,7 @@ CORS(app)
 db_connection = pymysql.connect(
     host='basededatosproyectoprogra.mysql.database.azure.com',
     port=3306,
-    user='myuser@basededatosproyectoprogra',
+    user='myuser',
     password='Mypassword.',
     database='login',
     ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
@@ -97,4 +97,7 @@ def upload_certificate():
     return jsonify({'message': 'Archivo guardado correctamente'}), 201
 
 if __name__ == "__main__":
-    app.run(port=3000)
+    port = int(os.environ.get("PORT", 4000))
+    app.run(host='0.0.0.0', port=port)
+
+print("conectado subircertificado.py")

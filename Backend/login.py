@@ -15,7 +15,7 @@ CORS(app)
 db_connection = pymysql.connect(
     host='basededatosproyectoprogra.mysql.database.azure.com',
     port=3306,
-    user='myuser@basededatosproyectoprogra',
+    user='myuser',
     password='Mypassword.',
     database='login'
 )
@@ -58,4 +58,7 @@ def logout():
     return jsonify({'message': 'Sesión cerrada exitosamente'}), 200
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
+
+print("conectado login.py")

@@ -22,7 +22,7 @@ const Subircerts = ({ onClose, certificateName }) => {
 
     try {
       const response = await fetch(
-        "https://proyectoprograprof2024.azurewebsites.net/dashboard",
+        "https://frontendproyecto2024.azurewebsites.net/dashboard",
         {
           method: "POST",
           body: formData,

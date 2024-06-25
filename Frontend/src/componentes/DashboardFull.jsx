@@ -20,7 +20,9 @@ const DashboardFull = () => {
       const decodedToken = jwtDecode(token);
       const user_name = decodedToken.sub;
 
-      fetch(`http://localhost:4000/api/users/${user_name}`)
+      fetch(
+        `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/users/${user_name}`
+      )
         .then((response) => response.json())
         .then((data) => {
           setUsuario({
@@ -35,19 +37,19 @@ const DashboardFull = () => {
     <div className="flex h-screen w-screen overflow-y-auto">
       <Sidebar>
         <Link to="/dashboard">
-          <SidebarItems icon={perf} text={t('profile')} />
+          <SidebarItems icon={perf} text={t("profile")} />
         </Link>
         <Link to="estadisticas">
-          <SidebarItems icon={stats} text={t('stats')} />
+          <SidebarItems icon={stats} text={t("stats")} />
         </Link>
         {usuario.rol === "administrador" && (
           <Link to="tabla-alumnos">
-            <SidebarItems icon={students} text={t('students')} />
+            <SidebarItems icon={students} text={t("students")} />
           </Link>
         )}
         {(usuario.rol === "profesor" || usuario.rol === "administrador") && (
           <Link to="panel-admin">
-            <SidebarItems icon={certs} text={t('panel')} />
+            <SidebarItems icon={certs} text={t("panel")} />
           </Link>
         )}
       </Sidebar>
