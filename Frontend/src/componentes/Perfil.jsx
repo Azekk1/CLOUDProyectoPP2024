@@ -34,10 +34,10 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/certificates"
         );
-        if (!response.data) {
+        if (!response.ok) {
           throw new Error("Error al cargar los certificados");
         }
         setCertificates(response.data);
@@ -70,16 +70,15 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
       return;
     }
 
-    alert("antes de decodificar");
     console.log(token);
 
     const decoded = decodeJWT(token);
     const userId = decoded.user_id;
-    alert("se descifro el token");
 
     console.log("segundo", certificate_id); // Cambiado de certificateName a certificateId
     const formData = new FormData();
     formData.append("user_id", userId);
+    console.log("id usuario", userId); // Cambiado de certificateName a certificateId
     formData.append("certificate_name", certificate_id); // Cambiado de certificateName a certificateId
     formData.append("file", selectedFile);
 
@@ -91,7 +90,6 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           body: formData,
         }
       );
-      alert("se hizo la solicitud");
 
       if (!response.ok) {
         throw new Error("Error al subir el archivo");
@@ -99,6 +97,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
 
       const result = await response.json();
       console.log(result);
+      alert("se subio exitosamente el archivo");
       onClose(); // Considera llamar a onAddCert si necesitas actualizar algún estado externo
     } catch (error) {
       console.error("Error al subir el archivo:", error);

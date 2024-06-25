@@ -29,7 +29,8 @@ def login():
     cursor = db_connection.cursor()
     cursor.execute('SELECT * FROM users WHERE user_name = %s', (email,))
     user = cursor.fetchone()
-
+    print(f"Nombre usuario: {user[6]}",flush=True)
+    print(f"Id usuario: {user[0]}",flush=True)
     if user:
         # Si se encontró el usuario, verificar la contraseña
         if user[4] == password:  # Suponiendo que la contraseña se almacena en la columna 'password'
@@ -45,7 +46,7 @@ def login():
             # Añadir 30 minutos a la fecha y hora actual
             expiration_time = current_utc_time + timedelta(minutes=30)
 
-            token = jwt.encode({'sub': email, 'user_id': user[1], 'user_role': user[2], 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
+            token = jwt.encode({'sub': email, 'user_id': user[0], 'user_role': user[1], 'iat': current_utc_time, 'exp': expiration_time}, app.config['SECRET_KEY'], algorithm='HS256')
             print(token)
             return jsonify({'token': token, 'expirationTime': expiration_time})
         else:

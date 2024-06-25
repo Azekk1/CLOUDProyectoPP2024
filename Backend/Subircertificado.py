@@ -37,15 +37,24 @@ def es_certificado_valido(texto_certificado):
     palabras_clave = ["aprobado", "approved", "completado", "complete"]
     return any(palabra in texto_min for palabra in palabras_clave)
 
-# Función para validar el certificado completo (mantenida igual)
-def validar_certificado(ruta, nombre_estudiante):
-    texto_certificado = extraer_texto_pdf(ruta)
-    if es_certificado_valido(texto_certificado) and validar_nombre_certificado(texto_certificado, nombre_estudiante):
+
+# Función para validar un certificado completo
+def validar_certificado(ruta_pdf, nombre_estudiante):
+    texto_certificado = extraer_texto_pdf(ruta_pdf)
+    validez = es_certificado_valido(texto_certificado)
+    validar_nombre = validar_nombre_certificado(texto_certificado, nombre_estudiante)
+    
+    # Opcional: Imprimir para verificar resultados
+    print(f"Texto del certificado: {texto_certificado}",flush=True)
+    print(f"El nombre del estudiante es: {nombre_estudiante}",flush=True)
+    print(f"Es válido: {validez}",flush=True)
+    print(f"Validación de nombre: {validar_nombre}",flush=True)
+    
+    if validez and validar_nombre:
         return "aprobado"
     else:
         return "rechazado"
-
-# Función para obtener el nombre completo del usuario por su ID
+    
 def obtener_nombre_usuario(user_id):
     cursor = db_connection.cursor()
     cursor.execute('SELECT names, lastnames FROM users WHERE user_id = %s', (user_id,))
@@ -64,6 +73,7 @@ def obtener_id_certificado(nombre_certificado):
 @app.route('/dashboard', methods=['POST'])
 def upload_certificate():
     user_id = request.form.get('user_id')
+    print(f"Id usuario: {user_id}",flush=True)
     certificate_name = request.form.get('certificate_name')
     certificate_file = request.files['file']
     
@@ -78,7 +88,11 @@ def upload_certificate():
     certificate_file.save(file_path)
     
     nombre_estudiante = obtener_nombre_usuario(user_id)
-    aprooved = validar_certificado(file_path, nombre_estudiante)
+
+    # Llamada a la función de validación de certificados (debes implementar esta función)
+    aprooved = validar_certificado(file_path, nombre_estudiante)  # Retorna True si el certificado es válido, False en caso contrario
+    print(f"Certificado aprobado: {aprooved}",flush=True)
+
     
     file_path = f"http://your-server.com/{file_path}"  # Reemplaza 'your-server.com' con tu URL real
 
