@@ -57,27 +57,19 @@ const Estadisticas = () => {
   };
 
   const callErrorLog = () => {
-    axios
-      .get(
-        "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/error"
-      )
-      .then((response) => {
-        console.log(response.data);
-      });
+    axios.get("https://127.0.0.1/error").then((response) => {
+      console.log(response.data);
+    });
   };
 
   const callInfoLog = (tabla) => {
-    axios
-      .get("https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/info")
-      .then((response) => {
-        console.log(response.data, tabla);
-      });
+    axios.get("https://127.0.0.1/info").then((response) => {
+      console.log(response.data, tabla);
+    });
   };
 
   const fetchData = async (endpoint, setter) => {
-    const response = await fetch(
-      `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/${endpoint}`
-    );
+    const response = await fetch(`https://127.0.0.1/api/${endpoint}`);
     const data = await response.json();
     setter(data);
     callDebugLog(data);

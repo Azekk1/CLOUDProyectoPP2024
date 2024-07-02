@@ -39,9 +39,7 @@ const Certificaciones = () => {
   useEffect(() => {
     const fetchCertificaciones = async () => {
       try {
-        const response = await fetch(
-          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/all"
-        ); // Actualizar la URL del backend en Azure
+        const response = await fetch("https://127.0.0.1/api/all"); // Actualizar la URL del backend en Azure
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
