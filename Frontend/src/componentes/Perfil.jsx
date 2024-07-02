@@ -34,9 +34,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch(
-          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/certificates"
-        );
+        const response = await fetch("https://localhost:5000/api/certificates");
         if (!response.ok) {
           throw new Error("Error al cargar los certificados");
         }
@@ -83,13 +81,10 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch(
-        "https://frontendproyecto2024.azurewebsites.net/dashboard",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("https://localhost:5000/dashboard", {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         throw new Error("Error al subir el archivo");
@@ -224,9 +219,7 @@ const Perfil = () => {
       const user_name = decodedToken.sub;
 
       axios
-        .get(
-          `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/users/${user_name}`
-        )
+        .get(`https://localhost:5000/api/users/${user_name}`)
         .then((response) => {
           const data = response.data;
           setUsuario({
