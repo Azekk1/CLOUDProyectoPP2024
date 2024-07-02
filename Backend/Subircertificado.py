@@ -11,10 +11,10 @@ CORS(app)
 
 # Configuración de la conexión a la base de datos MySQL en Azure
 db_connection = pymysql.connect(
-    host='basededatosproyectoprogra.mysql.database.azure.com',
-    port=3306,
+    host='localhost',
+    port=3307,
     user='myuser',
-    password='Mypassword.',
+    password='mypassword',
     database='login',
     ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
 )
@@ -110,8 +110,7 @@ def upload_certificate():
 
     return jsonify({'message': 'Archivo guardado correctamente'}), 201
 
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 4000))
-    app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    app.run()
 
-print("conectado subircertificado.py")
+print("conectado api subircertificado.py")

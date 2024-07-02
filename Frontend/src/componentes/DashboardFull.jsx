@@ -20,9 +20,7 @@ const DashboardFull = () => {
       const decodedToken = jwtDecode(token);
       const user_name = decodedToken.sub;
 
-      fetch(
-        `https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/users/${user_name}`
-      )
+      fetch(`https://localhost:5000/api/users/${user_name}`)
         .then((response) => response.json())
         .then((data) => {
           setUsuario({

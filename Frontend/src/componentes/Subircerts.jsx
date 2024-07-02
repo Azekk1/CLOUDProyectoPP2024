@@ -21,14 +21,11 @@ const Subircerts = ({ onClose, certificateName }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch(
-        "https://frontendproyecto2024.azurewebsites.net/dashboard",
-        {
-          method: "POST",
-          body: formData,
-          // Asegúrate de incluir headers si tu API los requiere
-        }
-      );
+      const response = await fetch("https://localhost:5000/dashboard", {
+        method: "POST",
+        body: formData,
+        // Asegúrate de incluir headers si tu API los requiere
+      });
 
       if (!response.ok) {
         throw new Error("Error al subir el archivo");

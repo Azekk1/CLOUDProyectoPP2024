@@ -9,7 +9,7 @@ const PanelAdmin = () => {
     const fetchCertificates = async () => {
       try {
         const response = await axios.get(
-          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/api/certificates"
+          "https://localhost:5000/api/certificates"
         );
         if (!response.data) {
           throw new Error("Error al cargar los certificados");
