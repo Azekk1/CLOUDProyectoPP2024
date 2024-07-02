@@ -44,9 +44,7 @@ const Estadisticas = () => {
   const callDebugLog = (json) => {
     if (json.length == 0) {
       axios
-        .get(
-          "https://msdocs-python-webapp-quickstart-ras.azurewebsites.net/debug"
-        )
+        .get("https://localhost:5000/debug")
         .then((response) => {
           console.log(response.data);
         })
@@ -57,19 +55,19 @@ const Estadisticas = () => {
   };
 
   const callErrorLog = () => {
-    axios.get("https://127.0.0.1/error").then((response) => {
+    axios.get("https://localhost:5000/error").then((response) => {
       console.log(response.data);
     });
   };
 
   const callInfoLog = (tabla) => {
-    axios.get("https://127.0.0.1/info").then((response) => {
+    axios.get("https://localhost:5000/info").then((response) => {
       console.log(response.data, tabla);
     });
   };
 
   const fetchData = async (endpoint, setter) => {
-    const response = await fetch(`https://127.0.0.1/api/${endpoint}`);
+    const response = await fetch(`https://localhost:5000/api/${endpoint}`);
     const data = await response.json();
     setter(data);
     callDebugLog(data);

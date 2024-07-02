@@ -8,7 +8,9 @@ const PanelAdmin = () => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await axios.get("https://127.0.0.1/api/certificates");
+        const response = await axios.get(
+          "https://localhost:5000/api/certificates"
+        );
         if (!response.data) {
           throw new Error("Error al cargar los certificados");
         }
