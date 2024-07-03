@@ -30,10 +30,10 @@ def wait_for_db():
     while retries < max_retries:
         try:
             db_connection = pymysql.connect(
-                host='localhost',
-                port=3307,
-                user='myuser',
-                password='mypassword',
+                host=db_host,
+                port=db_port,
+                user=db_user,
+                password=db_password,
                 database=db_name,
                  ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
                 )
@@ -53,13 +53,13 @@ while not wait_for_db():
 
 # Crear la conexión a la base de datos globalmente
 db_connection = pymysql.connect(
-    host='localhost',
-    port=3307,
-    user='myuser',
-    password='mypassword',
+    host=db_host,
+    port=db_port,
+    user=db_user,
+    password=db_password,
     database=db_name,
     ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
-)
+    )
 
 
 # Configurar el logger
@@ -226,8 +226,53 @@ def delete_user(user_id):
 
 """APIS SUBIR CERTIFICADOS Y VALIDACIÓN"""
 
+# Ruta para obtener los certificados con su estado de validación
+@app.route('/certificates/rechazados', methods=['GET'])
+def get_pending_certificates():
+    with db_connection.cursor() as cursor:
+        sql = """
+        SELECT uc.user_id, CONCAT(u.names, ' ', u.lastnames) as user_name, uc.certificate_id, c.name as certificate_name, uc.file_path
+        FROM user_certificate uc
+        JOIN users u ON uc.user_id = u.user_id
+        JOIN certificate c ON uc.certificate_id = c.certificate_id
+        WHERE uc.approved = 'rechazado'
+        """
+        cursor.execute(sql)
+        pending_certificates = cursor.fetchall()
+
+    normalized_certificates = []
+    for cert in pending_certificates:
+        # Crear un diccionario para cada certificado
+        cert_dict = {
+            'user_id': cert[0],
+            'user_name': cert[1],
+            'certificate_id': cert[2],
+            'certificate_name': cert[3],
+            'file_path': os.path.normpath(cert[4])  # Normalizar la ruta del archivo
+        }
+        normalized_certificates.append(cert_dict)
+
+    return jsonify(normalized_certificates)
+
+#Ruta para descargar un certificado
+@app.route('/certificates/<path:file_path>', methods=['GET'])
+def download_certificate(file_path):
+    try:
+        # Construir la ruta completa en el sistema local
+        full_path = os.path.abspath(file_path)
+
+        # Verificar si el archivo existe
+        if not os.path.isfile(full_path):
+            return "Archivo no encontrado", 404
+
+        # Enviar el archivo al cliente
+        return send_file(full_path, as_attachment=True)
+
+    except Exception as e:
+        return str(e), 500
+
 # Ruta para subir un certificado y almacenar información en la base de datos
-@app.route('/api/dashboard', methods=['POST'])
+@app.route('/dashboard', methods=['POST'])
 def upload_certificate():
     user_id = request.form.get('user_id')
     print(f"Id usuario: {user_id}", flush=True)
@@ -265,7 +310,7 @@ def upload_certificate():
     return jsonify({'message': 'Certificado subido exitosamente'})
 
 # Ruta para obtener el dashboard de un usuario
-@app.route('/api/dashboard/<int:user_id>', methods=['GET'])
+@app.route('/dashboard/<int:user_id>', methods=['GET'])
 def user_dashboard(user_id):
     with db_connection.cursor(pymysql.cursors.DictCursor) as cursor:
         cursor.execute("""
@@ -282,75 +327,26 @@ def user_dashboard(user_id):
 def favicon():
     return "", 200
 
-# Ruta para obtener los 10 certificados más comunes
-@app.route('/api/top10', methods=['GET'])
-def top10_certificates():
-    cursor = db_connection.cursor()
+# Ruta para obtener estadísticas
+@app.route('/api/estadisticas/<string:career>/<string:start_date>/<string:end_date>', methods=['GET'])
+def get_estadisticas(career, start_date, end_date):
+    print(career, flush=True)
+    start_date_obj = datetime.strptime(start_date, '%Y-%m-%d').date()
+    end_date_obj = datetime.strptime(end_date, '%Y-%m-%d').date()
 
-    cursor.execute('SELECT c.name, COUNT(uc.user_id) AS numero_de_usuarios FROM login.user_certificate uc JOIN certificate c ON uc.certificate_id = c.certificate_id GROUP BY c.name ORDER BY numero_de_usuarios DESC LIMIT 10;')
-    top10 = cursor.fetchall()
-
+    cursor = db_connection.cursor(pymysql.cursors.DictCursor)
+    query = """
+    SELECT u.user_id, u.user_name, c.career_id, c.name, uc.approved, uc.upload_time
+    FROM users u
+    INNER JOIN career c ON u.career_id = c.career_id
+    INNER JOIN user_certificate uc ON u.user_id = uc.user_id
+    WHERE c.name = %s AND uc.upload_time BETWEEN %s AND %s;
+    """
+    cursor.execute(query, (career, start_date_obj, end_date_obj))
+    results = cursor.fetchall()
     cursor.close()
 
-    result = [{'name': row[0], 'numero_de_usuarios': row[1]} for row in top10]
-
-    return jsonify(result)
-
-# Ruta para obtener el promedio de certificados por año de ingreso
-@app.route('/api/avgYear', methods=['GET'])
-def average_certificates_per_year():
-    cursor = db_connection.cursor()
-
-    cursor.execute('WITH certificados_por_usuario AS ( SELECT u.entry_year, COUNT(c.certificate_id) AS numero_de_certificados FROM users u JOIN user_certificate c ON u.user_id = c.user_id GROUP BY u.user_id, u.entry_year ) SELECT entry_year, AVG(numero_de_certificados) AS promedio_certificados FROM certificados_por_usuario GROUP BY entry_year ORDER BY entry_year;')
-    avgYear = cursor.fetchall()
-
-    cursor.close()
-
-    result = [{'entry_year': row[0], 'promedio_certificados': row[1]} for row in avgYear]
-
-    return jsonify(result)
-
-# Ruta para obtener el promedio de certificados por carrera
-@app.route('/api/avgCareer', methods=['GET'])
-def average_certificates_per_career():
-    cursor = db_connection.cursor()
-
-    cursor.execute('WITH certificados_por_usuario AS ( SELECT u.career_id, COUNT(c.certificate_id) AS numero_de_certificados FROM users u JOIN user_certificate c ON u.user_id = c.user_id GROUP BY u.user_id, u.career_id ) SELECT ca.name, AVG(cu.numero_de_certificados) AS promedio_certificados FROM certificados_por_usuario cu JOIN career ca ON cu.career_id = ca.career_id GROUP BY ca.name ORDER BY ca.name;')
-    avgYear = cursor.fetchall()
-
-    cursor.close()
-
-    result = [{'name': row[0], 'promedio_certificados': row[1]} for row in avgYear]
-
-    return jsonify(result)
-
-# Ruta para obtener los certificados más comunes por carrera
-@app.route('/api/careers', methods=['GET'])
-def careers_certificates():
-    cursor = db_connection.cursor()
-
-    cursor.execute('WITH CertificadosPorCarrera AS ( SELECT u.career_id, uc.certificate_id, COUNT(uc.user_id) AS numero_de_usuarios FROM user_certificate uc JOIN users u ON uc.user_id = u.user_id GROUP BY u.career_id, uc.certificate_id ), CertificadoMasComunPorCarrera AS ( SELECT cpc.career_id, cpc.certificate_id, cpc.numero_de_usuarios, ROW_NUMBER() OVER (PARTITION BY cpc.career_id ORDER BY cpc.numero_de_usuarios DESC) AS rn FROM CertificadosPorCarrera cpc ) SELECT cr.name, ce.name FROM CertificadoMasComunPorCarrera cmc JOIN career cr ON cmc.career_id = cr.career_id JOIN certificate ce ON cmc.certificate_id = ce.certificate_id WHERE cmc.rn = 1 ORDER BY cr.name;')
-    careers = cursor.fetchall()
-
-    cursor.close()
-
-    result = [{'career_name': row[0], 'certificate_name': row[1]} for row in careers]
-
-    return jsonify(result)
-
-# Ruta para obtener todos los certificados
-@app.route('/api/all', methods=['GET'])
-def all_certificates():
-    cursor = db_connection.cursor()
-
-    cursor.execute('SELECT c.certificate_id, c.name, ca.name FROM certificate c INNER JOIN career ca ON c.career_id = ca.career_id;')
-    all = cursor.fetchall()
-
-    cursor.close()
-
-    result = [{'id': row[0], 'nombre': row[1], 'carrera': row[2]} for row in all]
-
-    return jsonify(result)
+    return jsonify(results)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

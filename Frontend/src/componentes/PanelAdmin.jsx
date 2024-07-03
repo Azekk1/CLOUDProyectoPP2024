@@ -68,6 +68,24 @@ const PanelAdmin = () => {
     fetchCertificates();
   }, []);
 
+  useEffect(() => {
+    const fetchRejectedCertificates = async () => {
+      try {
+        const response = await axios.get(
+          "http://139.59.134.160:5000/certificates/rechazados"
+        );
+        if (!response.data) {
+          throw new Error("Error al cargar los certificados rechazados");
+        }
+        setRejectedCertificates(response.data);
+      } catch (error) {
+        console.error("Error al cargar los certificados rechazados:", error);
+      }
+    };
+
+    fetchRejectedCertificates();
+  }, []);
+
   const handleSelectManual = (certificateId) => {
     setTipoValidaciones((prevValidations) => ({
       ...prevValidations,
@@ -156,6 +174,13 @@ const PanelAdmin = () => {
                   Subido por: {certificate.user_name} el{" "}
                   {new Date(certificate.upload_time).toLocaleDateString()}
                 </p>
+                <a
+                  href={`http://139.59.134.160:5000/certificates/<path:file_path>${certificate.file_path}`}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md inline-block"
+                  download
+                >
+                  Descargar Certificado
+                </a>
               </div>
             ))}
           </div>
