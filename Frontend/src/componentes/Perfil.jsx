@@ -35,7 +35,9 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/certificates");
+        const response = await fetch(
+          "http://139.59.134.160:5000/api/certificates"
+        );
         if (!response.ok) {
           throw new Error("Error al cargar los certificados");
         }
@@ -82,7 +84,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/dashboard", {
+      const response = await fetch("http://139.59.134.160:5000/dashboard", {
         method: "POST",
         body: formData,
       });
@@ -220,7 +222,7 @@ const Perfil = () => {
       const user_name = decodedToken.sub;
 
       axios
-        .get(`http://127.0.0.1:5000/api/users/${user_name}`)
+        .get(`http://139.59.134.160:5000/api/users/${user_name}`)
         .then((response) => {
           const data = response.data;
           setUsuario({

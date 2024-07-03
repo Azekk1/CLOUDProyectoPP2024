@@ -9,7 +9,7 @@ const PanelAdmin = () => {
     const fetchCertificates = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:5000/api/certificates"
+          "http://139.59.134.160:5000/api/certificates"
         );
         if (!response.data) {
           throw new Error("Error al cargar los certificados");

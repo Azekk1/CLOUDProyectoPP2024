@@ -39,7 +39,9 @@ const Certificaciones = () => {
   useEffect(() => {
     const fetchCertificaciones = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/certificates"); // Actualizar la URL del backend en Azure
+        const response = await fetch(
+          "http://139.59.134.160:5000/api/certificates"
+        ); // Actualizar la URL del backend en Azure
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

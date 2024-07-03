@@ -21,7 +21,7 @@ const Subircerts = ({ onClose, certificateName }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://127.0.0.1:5000/dashboard", {
+      const response = await fetch("http://139.59.134.160:5000/dashboard", {
         method: "POST",
         body: formData,
         // Asegúrate de incluir headers si tu API los requiere

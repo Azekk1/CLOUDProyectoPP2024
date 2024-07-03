@@ -44,7 +44,7 @@ const Estadisticas = () => {
   const callDebugLog = (json) => {
     if (json.length == 0) {
       axios
-        .get("http://127.0.0.1:5000/debug")
+        .get("http://139.59.134.160:5000/debug")
         .then((response) => {
           console.log(response.data);
         })
@@ -55,19 +55,19 @@ const Estadisticas = () => {
   };
 
   const callErrorLog = () => {
-    axios.get("http://127.0.0.1:5000/error").then((response) => {
+    axios.get("http://139.59.134.160:5000/error").then((response) => {
       console.log(response.data);
     });
   };
 
   const callInfoLog = (tabla) => {
-    axios.get("http://127.0.0.1:5000/info").then((response) => {
+    axios.get("http://139.59.134.160:5000/info").then((response) => {
       console.log(response.data, tabla);
     });
   };
 
   const fetchData = async (endpoint, setter) => {
-    const response = await fetch(`http://127.0.0.1:5000/api/${endpoint}`);
+    const response = await fetch(`http://139.59.134.160:5000/api/${endpoint}`);
     const data = await response.json();
     setter(data);
     callDebugLog(data);
