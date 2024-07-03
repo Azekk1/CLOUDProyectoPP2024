@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
 const PanelAdmin = () => {
   const { t } = useTranslation("admin");
@@ -49,12 +50,12 @@ const PanelAdmin = () => {
   return (
     <div className="container mx-auto p-6 bg-background rounded-lg shadow-lg">
       <h1 className="text-3xl font-semibold text-text mb-6 text-center">
-        {t('panel')}
+        {t("panel")}
       </h1>
 
       <div>
         <h2 className="text-2xl font-semibold text-text mb-4">
-          {t('certificates')}
+          {t("certificates")}
         </h2>
       </div>
 
@@ -65,7 +66,7 @@ const PanelAdmin = () => {
             className="bg-secondary p-2 rounded-md border border-primary"
           >
             <h2 className="text-lg font-semibold text-text mb-1">
-              {t('certificate')}: {certificate.certificate_name}
+              {t("certificate")}: {certificate.certificate_name}
             </h2>
             <div className="flex space-x-2">
               <button
@@ -76,7 +77,7 @@ const PanelAdmin = () => {
                 }`}
                 onClick={() => handleSelectManual(certificate.certificate_id)}
               >
-                {t('manual')}
+                {t("manual")}
               </button>
               <button
                 className={`flex-1 p-2 text-center ${
@@ -88,7 +89,7 @@ const PanelAdmin = () => {
                   handleSelectAutomatica(certificate.certificate_id)
                 }
               >
-                {t('auto')}
+                {t("auto")}
               </button>
             </div>
           </div>
