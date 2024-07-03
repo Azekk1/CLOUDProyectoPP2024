@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import pymysql
 import os
@@ -8,6 +8,7 @@ import jwt
 import fitz  # PyMuPDF
 import logging
 import time
+
 
 # Crear un objeto de zona horaria UTC
 utc_timezone = timezone.utc
@@ -29,13 +30,13 @@ def wait_for_db():
     while retries < max_retries:
         try:
             db_connection = pymysql.connect(
-                host=db_host,
-                port=db_port,
-                user=db_user,
-                password=db_password,
+                host='localhost',
+                port=3307,
+                user='myuser',
+                password='mypassword',
                 database=db_name,
-                ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
-            )
+                 ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
+                )
             db_connection.close()
             print("Conexión establecida con la base de datos")
             return True
@@ -52,10 +53,10 @@ while not wait_for_db():
 
 # Crear la conexión a la base de datos globalmente
 db_connection = pymysql.connect(
-    host=db_host,
-    port=db_port,
-    user=db_user,
-    password=db_password,
+    host='localhost',
+    port=3307,
+    user='myuser',
+    password='mypassword',
     database=db_name,
     ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
 )
@@ -223,8 +224,57 @@ def delete_user(user_id):
     cursor.close()
     return jsonify({'message': 'Usuario eliminado correctamente'})
 
+<<<<<<< HEAD
 # Ruta para obtener los certificados con su estado de validación
 
+=======
+"""APIS SUBIR CERTIFICADOS Y VALIDACIÓN"""
+
+# Ruta para obtener los certificados rechazados
+@app.route('/certificates/rechazados', methods=['GET'])
+def get_pending_certificates():
+    with db_connection.cursor() as cursor:
+        sql = """
+        SELECT uc.user_id, CONCAT(u.names, ' ', u.lastnames) as user_name, uc.certificate_id, c.name as certificate_name, uc.file_path
+        FROM user_certificate uc
+        JOIN users u ON uc.user_id = u.user_id
+        JOIN certificate c ON uc.certificate_id = c.certificate_id
+        WHERE uc.approved = 'rechazado'
+        """
+        cursor.execute(sql)
+        pending_certificates = cursor.fetchall()
+
+    normalized_certificates = []
+    for cert in pending_certificates:
+        # Crear un diccionario para cada certificado
+        cert_dict = {
+            'user_id': cert[0],
+            'user_name': cert[1],
+            'certificate_id': cert[2],
+            'certificate_name': cert[3],
+            'file_path': os.path.normpath(cert[4])  # Normalizar la ruta del archivo
+        }
+        normalized_certificates.append(cert_dict)
+
+    return jsonify(normalized_certificates)
+
+#Ruta para descargar un certificado
+@app.route('/certificates/<path:file_path>', methods=['GET'])
+def download_certificate(file_path):
+    try:
+        # Construir la ruta completa en el sistema local
+        full_path = os.path.abspath(file_path)
+
+        # Verificar si el archivo existe
+        if not os.path.isfile(full_path):
+            return "Archivo no encontrado", 404
+
+        # Enviar el archivo al cliente
+        return send_file(full_path, as_attachment=True)
+
+    except Exception as e:
+        return str(e), 500
+>>>>>>> validar-certificados
 
 # Ruta para subir un certificado y almacenar información en la base de datos
 @app.route('/api/dashboard', methods=['POST'])
@@ -248,7 +298,7 @@ def upload_certificate():
     aprooved = validar_certificado(file_path, nombre_estudiante)
     print(f"Certificado aprobado: {aprooved}", flush=True)
 
-    file_path = f"http://your-server.com/{file_path}"
+    #file_path = f"http://your-server.com/{file_path}"
 
     current_time = datetime.now()
 
