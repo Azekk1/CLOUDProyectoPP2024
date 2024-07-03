@@ -224,10 +224,6 @@ def delete_user(user_id):
     cursor.close()
     return jsonify({'message': 'Usuario eliminado correctamente'})
 
-<<<<<<< HEAD
-# Ruta para obtener los certificados con su estado de validación
-
-=======
 """APIS SUBIR CERTIFICADOS Y VALIDACIÓN"""
 
 # Ruta para obtener los certificados rechazados
@@ -274,7 +270,6 @@ def download_certificate(file_path):
 
     except Exception as e:
         return str(e), 500
->>>>>>> validar-certificados
 
 # Ruta para subir un certificado y almacenar información en la base de datos
 @app.route('/api/dashboard', methods=['POST'])

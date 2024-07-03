@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-
-
-
 const decodeJWT = (token) => {
   try {
     const base64Url = token.split(".")[1]; // Obtiene la parte del payload del token
@@ -75,7 +72,7 @@ const PanelAdmin = () => {
     const fetchRejectedCertificates = async () => {
       try {
         const response = await axios.get(
-          "http://tu-backend.com/api/rejected-certificates"
+          "http://139.59.134.160:5000/certificates/rechazados"
         );
         if (!response.data) {
           throw new Error("Error al cargar los certificados rechazados");
@@ -178,7 +175,7 @@ const PanelAdmin = () => {
                   {new Date(certificate.upload_time).toLocaleDateString()}
                 </p>
                 <a
-                  href={`http://tu-backend.com/api/download/${certificate.file_path}`}
+                  href={`http://139.59.134.160:5000/certificates/<path:file_path>${certificate.file_path}`}
                   className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-md inline-block"
                   download
                 >
@@ -188,7 +185,9 @@ const PanelAdmin = () => {
             ))}
           </div>
         ) : (
-          <p className="text-text">No hay certificados rechazados disponibles.</p>
+          <p className="text-text">
+            No hay certificados rechazados disponibles.
+          </p>
         )}
       </div>
     </div>
@@ -196,4 +195,3 @@ const PanelAdmin = () => {
 };
 
 export default PanelAdmin;
-
