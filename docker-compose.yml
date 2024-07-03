@@ -1,61 +1,46 @@
 version: "3.8"
+
 services:
-  login:
+  frontend:
     build:
-      context: D:\Documentos\proyecto progra 2024 bitbucket\codigo\Backend
-      dockerfile: login.Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
-      - "5000:5000"
-    depends_on:
-      - db
-    networks:
-      - app-network
-  db:
-    build:
-      context: D:\Documentos\proyecto progra 2024 bitbucket\codigo\Database
-      dockerfile: database.Dockerfile
-    ports:
-      - "3307:3306"
-    volumes:
-      - db-data:/var/lib/mysql
+      - "3000:3000" # Ajusta el puerto según lo necesario
     networks:
       - app-network
 
-  apis:
+  backend:
     build:
-      context: D:\Documentos\proyecto progra 2024 bitbucket\codigo\Backend
-      dockerfile: apis.Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "4000:4000"
-    depends_on:
-      - db
+      - "5000:5000" # Ajusta el puerto según lo necesario
     networks:
       - app-network
+    depends_on:
+      - database
+    links:
+      - database:database
 
-  subircertificado:
+  database:
     build:
-      context: D:\Documentos\proyecto progra 2024 bitbucket\codigo\Backend
-      dockerfile: subircertificado.Dockerfile
+      context: ./database
+      dockerfile: Dockerfile
     ports:
-      - "3000:3000"
-    depends_on:
-      - db
+      - "3306:3306" # Ajusta el puerto según lo necesario
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: login
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
     networks:
       - app-network
-
-  estadisticas:
-    build:
-      context: D:\Documentos\proyecto progra 2024 bitbucket\codigo\Backend
-      dockerfile: estadisticas.Dockerfile
-    ports:
-      - "4001:4001"
-    depends_on:
-      - db
-    networks:
-      - app-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 networks:
   app-network:
-
-volumes:
-  db-data:
+    driver: bridge

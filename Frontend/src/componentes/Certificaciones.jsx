@@ -39,11 +39,12 @@ const Certificaciones = () => {
   useEffect(() => {
     const fetchCertificaciones = async () => {
       try {
-        const response = await fetch("https://localhost:5000/api/certificates"); // Actualizar la URL del backend en Azure
+        const response = await fetch("http://127.0.0.1:5000/api/certificates"); // Actualizar la URL del backend en Azure
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
         const data = await response.json(); // Convertir la respuesta a formato JSON
+        console.log("Datos recibidos del servidor:", data);
         setCertificaciones(data); // Actualizar el estado con los datos recibidos
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -69,13 +70,16 @@ const Certificaciones = () => {
   };
 
   const certificacionesFiltradas = certificaciones.filter((certificacion) => {
-    const nombreNormalized = normalizeString(certificacion.nombre);
+    const nombre = certificacion.certificate_name || "";
     const busquedaNormalized = normalizeString(busqueda);
+    const nombreNormalized = normalizeString(nombre);
     return (
       (filtroCarrera === "Todas" || certificacion.carrera === filtroCarrera) &&
       nombreNormalized.includes(busquedaNormalized)
     );
   });
+
+  console.log("Certificaciones filtradas:", certificacionesFiltradas);
 
   return (
     <div className="p-2 2 xl:shrink-0 mb-12">
@@ -126,9 +130,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Ingenieria Civil" && "font-bold"
                   }`}
-                  onClick={() =>
-                    handleFiltroCarreraChange(t("Ingenieria Civil"))
-                  }
+                  onClick={() => handleFiltroCarreraChange("Ingenieria Civil")}
                 >
                   {t("civil")}
                 </li>
@@ -137,7 +139,7 @@ const Certificaciones = () => {
                     filtroCarrera === "Ingenieria Comercial" && "font-bold"
                   }`}
                   onClick={() =>
-                    handleFiltroCarreraChange(t("Ingenieria Comercial"))
+                    handleFiltroCarreraChange("Ingenieria Comercial")
                   }
                 >
                   {t("commercial")}
@@ -146,7 +148,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Derecho" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("Derecho"))}
+                  onClick={() => handleFiltroCarreraChange("Derecho")}
                 >
                   {t("law")}
                 </li>
@@ -154,7 +156,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer border-b-2 border-primary/20 my-2 ${
                     filtroCarrera === "Psicologia" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("Psicologia"))}
+                  onClick={() => handleFiltroCarreraChange("Psicologia")}
                 >
                   {t("psychology")}
                 </li>
@@ -162,7 +164,7 @@ const Certificaciones = () => {
                   className={`cursor-pointer mb-1 ${
                     filtroCarrera === "Periodismo" && "font-bold"
                   }`}
-                  onClick={() => handleFiltroCarreraChange(t("Periodismo"))}
+                  onClick={() => handleFiltroCarreraChange("Periodismo")}
                 >
                   {t("journalism")}
                 </li>
@@ -173,14 +175,18 @@ const Certificaciones = () => {
           <div className="border-solid border-2 border-accent bg-background shadow-xl p-4 rounded-xl w-full md:w-3/4 mt-12 md:mt-0">
             {/* Lista de certificaciones filtradas */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:grid-cols-4">
-              {certificacionesFiltradas.map((certificacion) => (
+              {certificacionesFiltradas.map((certificacion, index) => (
                 <div
-                  key={certificacion.id}
+                  key={certificacion.certificate_id || index}
                   className="hover:transition-all duration-500 hover:bg-accent bg-secondary text-text rounded-lg p-4"
                 >
-                  <h3 className="font-bold">{certificacion.nombre}</h3>
+                  <h3 className="font-bold">
+                    {certificacion.certificate_name}
+                  </h3>
                   <p>
-                    {carreraTranslations[i18n.language][certificacion.carrera]}
+                    {carreraTranslations[i18n.language][
+                      certificacion.carrera
+                    ] || certificacion.carrera}
                   </p>
                 </div>
               ))}

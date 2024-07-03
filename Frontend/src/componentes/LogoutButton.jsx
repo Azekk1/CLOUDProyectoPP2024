@@ -9,7 +9,7 @@ const LogoutButton = () => {
   const handleLogout = async () => {
     try {
       // Envía una solicitud al backend para cerrar sesión
-      await axios.post("https://localhost:5000/logout");
+      await axios.post("http://127.0.0.1:5000/logout");
 
       // Eliminar el token de acceso del localStorage
       localStorage.removeItem("token");

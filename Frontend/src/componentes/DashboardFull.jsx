@@ -20,7 +20,7 @@ const DashboardFull = () => {
       const decodedToken = jwtDecode(token);
       const user_name = decodedToken.sub;
 
-      fetch(`https://localhost:5000/api/users/${user_name}`)
+      fetch(`http://127.0.0.1:5000/api/users/${user_name}`)
         .then((response) => response.json())
         .then((data) => {
           setUsuario({
