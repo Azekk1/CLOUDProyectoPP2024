@@ -227,7 +227,7 @@ def delete_user(user_id):
 
 
 # Ruta para subir un certificado y almacenar información en la base de datos
-@app.route('/dashboard', methods=['POST'])
+@app.route('/api/dashboard', methods=['POST'])
 def upload_certificate():
     user_id = request.form.get('user_id')
     print(f"Id usuario: {user_id}", flush=True)
@@ -265,7 +265,7 @@ def upload_certificate():
     return jsonify({'message': 'Certificado subido exitosamente'})
 
 # Ruta para obtener el dashboard de un usuario
-@app.route('/dashboard/<int:user_id>', methods=['GET'])
+@app.route('/api/dashboard/<int:user_id>', methods=['GET'])
 def user_dashboard(user_id):
     with db_connection.cursor(pymysql.cursors.DictCursor) as cursor:
         cursor.execute("""

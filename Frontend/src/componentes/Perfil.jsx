@@ -85,7 +85,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
     formData.append("file", selectedFile);
 
     try {
-      const response = await fetch("http://139.59.134.160:5000/dashboard", {
+      const response = await fetch("http://139.59.134.160:5000/api/dashboard", {
         method: "POST",
         body: formData,
       });
@@ -115,7 +115,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           onChange={(e) => setCertificateid(e.target.value)}
           className="mb-4 p-2 w-full border rounded-md"
         >
-          <option value="">{t('select_certificate')}</option>
+          <option value="">{t("select_certificate")}</option>
           {certificates.map((cert) => (
             <option key={cert.certificate_id} value={cert.certificateId}>
               {cert.certificate_name}
@@ -126,7 +126,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           htmlFor="fileInput"
           className="transition-all bg-gray-500 cursor-pointer hover:bg-secondary text-white font-bold py-2 px-4 rounded-xl mr-4"
         >
-          {t('select_file')}
+          {t("select_file")}
         </label>
         <input
           type="file"
@@ -141,13 +141,13 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
             className="transition-colors bg-accent hover:bg-accent/70 text-white px-4 py-2 rounded mr-2"
             onClick={onClose}
           >
-            {t('cancel')}
+            {t("cancel")}
           </button>
           <button
             className="transition-colors bg-primary/80 hover:bg-primary/50 text-white px-4 py-2 rounded"
             onClick={handleSubmit}
           >
-            {t('submit')}
+            {t("submit")}
           </button>
         </div>
       </div>
@@ -173,7 +173,9 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 
   return (
     <div className="mt-8">
-      <h3 className="text-2xl font-semibold text-text">{t('certifications')}</h3>
+      <h3 className="text-2xl font-semibold text-text">
+        {t("certifications")}
+      </h3>
       <div className="relative mt-4">
         {certificaciones.length > 0 ? (
           <div className="flex items-center">
@@ -197,13 +199,13 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
             </button>
           </div>
         ) : (
-          <p className="text-text">{t('no_certifications')}</p>
+          <p className="text-text">{t("no_certifications")}</p>
         )}
         <div
           className="mt-4 p-4 bg-secondary rounded-lg border border-accent text-text cursor-pointer flex items-center justify-center"
           onClick={onAddCert}
         >
-          <span className="mr-2">{t('add')}</span>
+          <span className="mr-2">{t("add")}</span>
           <span className="text-2xl font-bold">+</span>
         </div>
       </div>
@@ -279,15 +281,19 @@ const Perfil = () => {
           <p className="text-text">{usuario.correo}</p>
           <p className="text-text">{usuario.carrera}</p>
           {usuario.rol === "profesor" ? (
-            <p className="text-text">{t('teacher')} {usuario.generacion}</p>
+            <p className="text-text">
+              {t("teacher")} {usuario.generacion}
+            </p>
           ) : (
-            <p className="text-text">{t('generation')} {usuario.generacion}</p>
+            <p className="text-text">
+              {t("generation")} {usuario.generacion}
+            </p>
           )}
           <p className="text-text font-semibold">{usuario.rol}</p>
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-2xl font-semibold text-text">{t('description')}</h3>
+        <h3 className="text-2xl font-semibold text-text">{t("description")}</h3>
         {editando ? (
           <div>
             <textarea
@@ -299,13 +305,13 @@ const Perfil = () => {
               className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
               onClick={guardarDescripcion}
             >
-              {t('save')}
+              {t("save")}
             </button>
             <button
               className="mt-2 ml-2 px-4 py-2 bg-primary/40 text-text2 rounded-md"
               onClick={() => setEditando(false)}
             >
-              {t('cancel')}
+              {t("cancel")}
             </button>
           </div>
         ) : (
@@ -315,7 +321,7 @@ const Perfil = () => {
               className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
               onClick={() => setEditando(true)}
             >
-              {t('edit')}
+              {t("edit")}
             </button>
           </div>
         )}
