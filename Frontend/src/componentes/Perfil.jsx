@@ -23,6 +23,7 @@ const decodeJWT = (token) => {
 };
 
 const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
+  const { t } = useTranslation("dashboard");
   // Cambiado certificateName a certificateId
   if (!show) {
     return null;
@@ -114,7 +115,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           onChange={(e) => setCertificateid(e.target.value)}
           className="mb-4 p-2 w-full border rounded-md"
         >
-          <option value="">Selecciona una certificación</option>
+          <option value="">{t('select_certificate')}</option>
           {certificates.map((cert) => (
             <option key={cert.certificate_id} value={cert.certificateId}>
               {cert.certificate_name}
@@ -125,7 +126,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
           htmlFor="fileInput"
           className="transition-all bg-gray-500 cursor-pointer hover:bg-secondary text-white font-bold py-2 px-4 rounded-xl mr-4"
         >
-          Seleccionar archivo
+          {t('select_file')}
         </label>
         <input
           type="file"
@@ -140,13 +141,13 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
             className="transition-colors bg-accent hover:bg-accent/70 text-white px-4 py-2 rounded mr-2"
             onClick={onClose}
           >
-            Cancelar
+            {t('cancel')}
           </button>
           <button
             className="transition-colors bg-primary/80 hover:bg-primary/50 text-white px-4 py-2 rounded"
             onClick={handleSubmit}
           >
-            Subir
+            {t('submit')}
           </button>
         </div>
       </div>
@@ -155,6 +156,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
 };
 
 const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
+  const { t } = useTranslation("dashboard");
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const handlePrev = () => {
@@ -171,7 +173,7 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 
   return (
     <div className="mt-8">
-      <h3 className="text-2xl font-semibold text-text">Certificaciones</h3>
+      <h3 className="text-2xl font-semibold text-text">{t('certifications')}</h3>
       <div className="relative mt-4">
         {certificaciones.length > 0 ? (
           <div className="flex items-center">
@@ -195,13 +197,13 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
             </button>
           </div>
         ) : (
-          <p className="text-text">No hay certificaciones disponibles</p>
+          <p className="text-text">{t('no_certifications')}</p>
         )}
         <div
           className="mt-4 p-4 bg-secondary rounded-lg border border-accent text-text cursor-pointer flex items-center justify-center"
           onClick={onAddCert}
         >
-          <span className="mr-2">Añadir certificación</span>
+          <span className="mr-2">{t('add')}</span>
           <span className="text-2xl font-bold">+</span>
         </div>
       </div>
@@ -210,6 +212,7 @@ const CarruselCertificaciones = ({ certificaciones, onAddCert }) => {
 };
 
 const Perfil = () => {
+  const { t } = useTranslation("dashboard");
   const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
   const [nuevaDescripcion, setNuevaDescripcion] = useState("");
@@ -276,15 +279,15 @@ const Perfil = () => {
           <p className="text-text">{usuario.correo}</p>
           <p className="text-text">{usuario.carrera}</p>
           {usuario.rol === "profesor" ? (
-            <p className="text-text">Profesor desde {usuario.generacion}</p>
+            <p className="text-text">{t('teacher')} {usuario.generacion}</p>
           ) : (
-            <p className="text-text">Generación {usuario.generacion}</p>
+            <p className="text-text">{t('generation')} {usuario.generacion}</p>
           )}
           <p className="text-text font-semibold">{usuario.rol}</p>
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="text-2xl font-semibold text-text">Descripción</h3>
+        <h3 className="text-2xl font-semibold text-text">{t('description')}</h3>
         {editando ? (
           <div>
             <textarea
@@ -296,13 +299,13 @@ const Perfil = () => {
               className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
               onClick={guardarDescripcion}
             >
-              Guardar
+              {t('save')}
             </button>
             <button
               className="mt-2 ml-2 px-4 py-2 bg-primary/40 text-text2 rounded-md"
               onClick={() => setEditando(false)}
             >
-              Cancelar
+              {t('cancel')}
             </button>
           </div>
         ) : (
@@ -312,7 +315,7 @@ const Perfil = () => {
               className="mt-2 px-4 py-2 bg-accent text-text2 rounded-md"
               onClick={() => setEditando(true)}
             >
-              Editar
+              {t('edit')}
             </button>
           </div>
         )}
