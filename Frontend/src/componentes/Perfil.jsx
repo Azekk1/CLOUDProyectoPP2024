@@ -22,16 +22,12 @@ const decodeJWT = (token) => {
   }
 };
 
-const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
+const Popup = ({ show, onClose, onAddCert }) => {
   const { t } = useTranslation("dashboard");
-  // Cambiado certificateName a certificateId
-  if (!show) {
-    return null;
-  }
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [certificates, setCertificates] = useState([]);
-  const [certificate_id, setCertificateid] = useState(""); // Esto podría necesitar ser cambiado o eliminado dependiendo de su uso
+  const [certificate_id, setCertificateid] = useState("");
 
   useEffect(() => {
     const fetchCertificates = async () => {
@@ -42,7 +38,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
         if (!response.ok) {
           throw new Error("Error al cargar los certificados");
         }
-        setCertificates(response.data);
+        setCertificates(await response.json());
       } catch (error) {
         console.error("Error al cargar los certificados:", error);
       }
@@ -60,7 +56,6 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
       alert("Por favor, selecciona un archivo primero.");
       return;
     }
-    console.log("al comienzo", certificate_id);
     if (!certificate_id) {
       alert("Por favor, selecciona un certificado.");
       return;
@@ -72,16 +67,12 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
       return;
     }
 
-    console.log(token);
-
     const decoded = decodeJWT(token);
     const userId = decoded.user_id;
 
-    console.log("segundo", certificate_id); // Cambiado de certificateName a certificateId
     const formData = new FormData();
     formData.append("user_id", userId);
-    console.log("id usuario", userId); // Cambiado de certificateName a certificateId
-    formData.append("certificate_name", certificate_id); // Cambiado de certificateName a certificateId
+    formData.append("certificate_name", certificate_id);
     formData.append("file", selectedFile);
 
     try {
@@ -104,6 +95,10 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
     }
   };
 
+  if (!show) {
+    return null;
+  }
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-primary bg-opacity-50 z-50">
       <div className="bg-background p-8 rounded-lg" style={{ zIndex: 51 }}>
@@ -117,7 +112,7 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
         >
           <option value="">{t("select_certificate")}</option>
           {certificates.map((cert) => (
-            <option key={cert.certificate_id} value={cert.certificateId}>
+            <option key={cert.certificate_id} value={cert.certificate_id}>
               {cert.certificate_name}
             </option>
           ))}
@@ -139,15 +134,15 @@ const Popup = ({ show, onClose, onAddCert, userId, certificateId }) => {
         <div className="flex justify-end">
           <button
             className="transition-colors bg-accent hover:bg-accent/70 text-white px-4 py-2 rounded mr-2"
+            onClick={handleSubmit}
+          >
+            {t("upload")}
+          </button>
+          <button
+            className="transition-colors bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded"
             onClick={onClose}
           >
             {t("cancel")}
-          </button>
-          <button
-            className="transition-colors bg-primary/80 hover:bg-primary/50 text-white px-4 py-2 rounded"
-            onClick={handleSubmit}
-          >
-            {t("submit")}
           </button>
         </div>
       </div>
