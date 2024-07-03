@@ -39,9 +39,7 @@ const Certificaciones = () => {
   useEffect(() => {
     const fetchCertificaciones = async () => {
       try {
-        const response = await fetch(
-          "http://139.59.134.160:5000/api/certificates"
-        ); // Actualizar la URL del backend en Azure
+        const response = await fetch("http://139.59.134.160:5000/api/all"); // Actualizar la URL del backend en Azure
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -179,12 +177,10 @@ const Certificaciones = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:grid-cols-4">
               {certificacionesFiltradas.map((certificacion, index) => (
                 <div
-                  key={certificacion.certificate_id || index}
+                  key={certificacion.id || index}
                   className="hover:transition-all duration-500 hover:bg-accent bg-secondary text-text rounded-lg p-4"
                 >
-                  <h3 className="font-bold">
-                    {certificacion.certificate_name}
-                  </h3>
+                  <h3 className="font-bold">{certificacion.nombre}</h3>
                   <p>
                     {carreraTranslations[i18n.language][
                       certificacion.carrera
