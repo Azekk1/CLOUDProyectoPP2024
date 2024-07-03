@@ -226,7 +226,7 @@ def delete_user(user_id):
 
 """APIS SUBIR CERTIFICADOS Y VALIDACIÓN"""
 
-# Ruta para obtener los certificados con su estado de validación
+# Ruta para obtener los certificados rechazados
 @app.route('/certificates/rechazados', methods=['GET'])
 def get_pending_certificates():
     with db_connection.cursor() as cursor:
