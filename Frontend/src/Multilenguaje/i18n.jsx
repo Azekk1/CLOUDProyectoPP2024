@@ -20,6 +20,8 @@ import logoutEN from './en/logout.json'
 import logoutES from './es/logout.json'
 import statsEN from './en/stats.json'
 import statsES from './es/stats.json'
+import adminEN from './en/admin.json'
+import adminES from './es/admin.json'
 
 // Configura i18next
 i18n
@@ -35,7 +37,8 @@ i18n
         language: languageEN,
         login: loginEN,
         logout: logoutEN,
-        stats: statsEN
+        stats: statsEN,
+        admin: adminEN
       },
       es: {
         home: homeES,
@@ -46,7 +49,8 @@ i18n
         language: languageES,
         login: loginES,
         logout: logoutES,
-        stats: statsES
+        stats: statsES,
+        admin: adminES
       },
     },
     lng: 'es', // establece el idioma predeterminado
