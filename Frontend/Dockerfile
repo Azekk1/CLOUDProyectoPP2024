@@ -18,7 +18,7 @@ COPY . .
 RUN npm run build
 
 # Expone el puerto en el que tu aplicación corre
-EXPOSE 3000
+EXPOSE 5173
 
 # Comando para ejecutar la aplicación cuando se inicie el contenedor
 CMD ["npm", "run", "dev"]

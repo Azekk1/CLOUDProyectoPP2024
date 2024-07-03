@@ -50,6 +50,15 @@ def wait_for_db():
 while not wait_for_db():
     print("Esperando a que la base de datos esté lista...")
 
+# Crear la conexión a la base de datos globalmente
+db_connection = pymysql.connect(
+    host=db_host,
+    port=db_port,
+    user=db_user,
+    password=db_password,
+    database=db_name,
+    ssl={"ssl": {"enabled": True, "verify_identity": False, "ca": "./BaltimoreCyberTrustRoot.crt.pem"}}
+)
 
 
 # Configurar el logger
@@ -302,4 +311,4 @@ def get_estadisticas(career, start_date, end_date):
     return jsonify(results)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')
